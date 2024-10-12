@@ -14,7 +14,7 @@ export function MenuItem(props:MenuItemProps){
 
     return (
         <Link className={className} to={props.path}><button className={classNames([
-            "rounded-lgp-2 w-full hover:bg-blue-700 text-white",
+            "rounded-lg p-2 w-full hover:bg-blue-700 text-white",
             {"bg-blue-500": !isActive},
             {"bg-blue-700": isActive},
         ])}>{props.title}</button></Link>
