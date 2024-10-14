@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+import './output.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import {Dashboard} from "./components/dashboard/Dashboard";
+import {Dashboard} from "./components/Dashboard/Dashboard";
 import {Posts} from "./components/Posts/Posts";
 import {Albums} from "./components/Albums/Albums";
 import {Photos} from "./components/Photos/Photos";
@@ -22,7 +21,7 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: '*', element: (<Navigate to={'/dashboard'}/>)
+        path: '*', element: (<Navigate to={'/Dashboard'}/>)
     }
 ]);
 
