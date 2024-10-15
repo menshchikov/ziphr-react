@@ -87,11 +87,15 @@ export function Photos(){
     function onFilterChange(e:any) {
         searchParams.set('filter',e.target.value);
         searchParams.set('filterType',state.filterType);
+        searchParams.set('page','1');
         setSearchParamsDebounced(searchParams);
     }
 
     function onFilterTypeChange(e:any) {
         searchParams.set('filterType',e.target.value);
+        if(state.filterValue.length > 0){
+            searchParams.set('page','1');
+        }
         setSearchParams(searchParams);
     }
 
