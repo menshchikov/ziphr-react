@@ -9,8 +9,8 @@ export interface PaginatorProps {
 
 export const Paginator = (props: PaginatorProps) => {
     const pagesArray = [];
-    const left = props.currentPageNum - 2;
-    const right = props.currentPageNum + 2;
+    const left = props.currentPageNum - 1;
+    const right = props.currentPageNum + 1;
     let isLeftSpaceInsert = false;
     let isRightSpaceInsert = false;
     for (let i = 1; i <= props.totalPagesCount; i++) {
@@ -61,7 +61,7 @@ export const Paginator = (props: PaginatorProps) => {
                 ])}
                     onClick={prevPage}
                 >
-                    <a className="page-link">Previous</a>
+                    <a className="page-link">&lt;</a>
                 </li>
 
                 {pagesArray.map((num, index) => {
@@ -87,7 +87,7 @@ export const Paginator = (props: PaginatorProps) => {
                 ])}
                     onClick={nextPage}
                 >
-                    <a className="page-link">Next</a>
+                    <a className="page-link">&gt;</a>
                 </li>
             </ul>
         </nav>
