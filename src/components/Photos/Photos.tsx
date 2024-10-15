@@ -116,7 +116,7 @@ export function Photos(){
 
                 <div>
                     <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} defaultValue={state.filterType} className="border-2 border-gray-200 rounded-lg p-2">
+                    <select onChange={onFilterTypeChange} value={state.filterType} className="border-2 border-gray-200 rounded-lg p-2">
                         <option value="albumId" >Album ID</option>
                         <option value="title" >Title</option>
                     </select>
