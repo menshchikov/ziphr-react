@@ -9,7 +9,7 @@ export interface MenuItemProps {
 
 export function MenuItem(props:MenuItemProps){
     const location = useLocation();
-    const isActive = location.pathname === props.path;
+    const isActive = location.pathname.indexOf(props.path) > -1;
 
     return (
         <a href={props.path} className={classNames([
