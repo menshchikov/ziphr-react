@@ -1,26 +1,27 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useReducer, useRef} from 'react';
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-// import {getPhotoById} from "../../services/photo-api";
-// import classNames from "classnames";
 import {getAlbumById} from "../../services/album-api";
-// import {Paginator} from "../Paginator";
 import {getPhotos} from "../../services/photo-api";
 import {Paginator} from "../Paginator";
-import {Photo} from "../../model/photo";
-
-const PAGE_SIZE = 5;
+import {debounce} from "lodash";
+import {AlbumState} from "./album-state";
+import {AlbumActions} from "./album-actions";
+import {albumReducer} from "./album-reducer";
 
 export const Album = () => {
     const {id} = useParams();
-    // const [showImg, setShowImg] = React.useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const page = useMemo(() => {
-        return Number.parseInt(searchParams.get("page") || '1');
-    }, [searchParams]);
-    const [pages, setPages] = React.useState(1);
-    const [photos, setPhotos] = React.useState<Photo[]>([]);
+
+    const [state, dispatch]: [AlbumState, any] = useReducer(albumReducer, {
+        page: Number.parseInt(searchParams.get("page") || '1'),
+        pages: 1,
+        filter: searchParams.get("filter") || '',
+        photos: [],
+        filteredPhotos: [],
+        pagePhotos:[],
+    });
 
     const pageChange = (page: number) => {
         searchParams.set('page', page.toString());
@@ -33,17 +34,48 @@ export const Album = () => {
         queryKey: ['photos', id],
         queryFn: async () => {
             const result = await getPhotos(id);
-            setPhotos(result);
-            setPages(Math.ceil(result.length / PAGE_SIZE));
+            dispatch({
+                type: AlbumActions.setPhotos,
+                photos: result,
+            });
             return result;
         }
     });
 
-    const pagePhotos = useMemo(() => {
-        let start = (page - 1) * PAGE_SIZE;
-        let end = start + PAGE_SIZE;
-        return photos.slice(start, end);
-    }, [page, photos]);
+    useEffect(() => {
+        const filter = searchParams.get("filter");
+        if(filter !== state.filter){
+            dispatch({
+                type: AlbumActions.setFilter,
+                filter,
+            });
+            return;
+        }
+        const page = Number.parseInt(searchParams.get("page") || '1');
+        if(page !== state.page){
+            dispatch({
+                type: AlbumActions.setPage,
+                page,
+            });
+            return;
+        }
+    }, [searchParams])
+
+    const setSearchParamsDebounced = useRef(
+        debounce((searchParams) => {
+            setSearchParams(searchParams);
+        }, 500)
+    ).current;
+
+    function onFilterChange(e: any) {
+        const title = e.target.value;
+        if (!title) {
+            searchParams.delete('filter');
+        } else {
+            searchParams.set('filter', title);
+        }
+        setSearchParamsDebounced(searchParams);
+    }
 
     if (albumQuery.isPending || photosQuery.isPending) {
         return <div>Loading...</div>
@@ -79,42 +111,25 @@ export const Album = () => {
 
         <h1>{albumQuery.data.title}</h1>
 
+        <div className="my-3">
+            <label className="block font-bold">Filter by title</label>
+            <input type="text" defaultValue={state.filter || ''}
+                   className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+        </div>
+
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {pagePhotos.map((photo) => (
+            {state.pagePhotos.map((photo) => (
                 <a key={photo.id}
                    className="border border-gray-200 rounded-lg overflow-hidden text-blue-600 visited:text-purple-600"
                    href={'/photos/' + photo.id}
                 >
-                    {/*<a  className="text-blue-600 visited:text-purple-600">*/}
-                        <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                             className="bg-gray-200 object-cover w-full h-[200px]"></img>
-                        <div className="p-1 line-clamp-2">{photo.title}</div>
-                    {/*</a>*/}
+                    <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
+                         className="bg-gray-200 object-cover w-full h-[200px]"></img>
+                    <div className="p-1 line-clamp-2">{photo.title}</div>
                 </a>
             ))}
         </div>
 
-
-        <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
-
-
-        {/*<img src={query.data.url}*/
-        }
-        {/*     alt={query.data.url.split('/').pop()}*/
-        }
-        {/*     onLoad={() => setShowImg(true)}*/
-        }
-        {/*     onError={() => setShowImg(true)}*/
-        }
-        {/*     className={classNames([*/
-        }
-        {/*         "w-auto bg-gray-200 rounded-lg h-[300px] md:h-[600px] object-cover m-auto",*/
-        }
-        {/*     ])}*/
-        }
-        {/*/>*/
-        }
-        {/*{!showImg && <div>Loading...</div>}*/
-        }
+        <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}/>
     </div>
 }
