@@ -16,12 +16,15 @@ export const Album = () => {
     // const [showImg, setShowImg] = React.useState(false);
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const [page, setPage] = React.useState(1);
+    const page = useMemo(() => {
+        return Number.parseInt(searchParams.get("page") || '1');
+    }, [searchParams]);
     const [pages, setPages] = React.useState(1);
     const [photos, setPhotos] = React.useState<Photo[]>([]);
 
     const pageChange = (page: number) => {
         searchParams.set('page', page.toString());
+        setSearchParams(searchParams);
     }
 
     useQueryClient();
@@ -37,7 +40,7 @@ export const Album = () => {
     });
 
     const pagePhotos = useMemo(() => {
-        let start = page - 1 * PAGE_SIZE;
+        let start = (page - 1) * PAGE_SIZE;
         let end = start + PAGE_SIZE;
         return photos.slice(start, end);
     }, [page, photos]);
