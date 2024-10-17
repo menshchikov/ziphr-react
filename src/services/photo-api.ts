@@ -5,10 +5,10 @@ export function getPhotoById(id: string): Promise<Photo> {
     return fetch(url + id).then(res => res.json())
 }
 
-export function getPhotos(filterType: string, filterValue: string) {
+export function getPhotos(albumId?:string): Promise<Photo[]> {
     let url = 'https://jsonplaceholder.typicode.com/photos';
-    if (filterType === 'albumId' && filterValue) {
-        url += '?albumId=' + filterValue;
+    if (albumId) {
+        url += '?albumId=' + albumId;
     }
     return fetch(url)
         .then(res => res.json())
