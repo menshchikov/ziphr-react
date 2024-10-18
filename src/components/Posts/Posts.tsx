@@ -137,8 +137,8 @@ export function Posts() {
             <tbody>
             {state.pagePosts.map(post => <tr key={post.id}>
                 <th className="border-b border-r-gray-200">{post.id}</th>
-                <td className="border-b border-r-gray-200"><a className="text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
-                <td className="border-b border-r-gray-200"><a className="" href={"posts/" + post.id}>{post.title}</a></td>
+                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600 text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
+                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600" href={"posts/" + post.id}>{post.title}</a></td>
                 <td className="border-b border-r-gray-200">{post.body}</td>
             </tr>)}
             </tbody>
