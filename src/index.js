@@ -12,6 +12,7 @@ import {Photos} from "./components/Photos/Photos";
 import {Photo} from "./components/Photos/Photo";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Album} from "./components/Album/Album";
+import {Post} from "./components/Post/Post";
 
 function NotFound() {
     return <div className="m-auto text-center h-[100vh] content-center">
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
             {index: true, element: (<Navigate to={'/dashboard'} replace/>)},
             {path: 'dashboard', element: (<Dashboard/>), index: true},
             {path: 'posts', element: (<Posts/>)},
+            {path: 'posts/:id', element: (<Post/>)},
             {path: 'albums', element: (<Albums/>)},
             {path: 'albums/:id', element: (<Album/>)},
             {path: 'photos', element: (<Photos/>)},
