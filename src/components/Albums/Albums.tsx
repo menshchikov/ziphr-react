@@ -13,10 +13,10 @@ export function Albums() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [state, dispatch]:[AlbumsState, any] = useReducer(albumsReducer, {}, () => {
+    const [state, dispatch]: [AlbumsState, any] = useReducer(albumsReducer, {}, () => {
         const filterValue = searchParams.get('filter') || '';
         const filterType = searchParams.get('filterType') || 'userId';
-        const userId = filterType === 'userId' || !filterType ? filterValue: '';
+        const userId = filterType === 'userId' || !filterType ? filterValue : '';
         return {
             page: Number.parseInt(searchParams.get('page') || '1'),
             pages: 1,
@@ -29,10 +29,10 @@ export function Albums() {
         }
     });
 
-    useEffect(() =>{
-        const filterValue= searchParams.get('filter') || '';
-        const filterType= searchParams.get('filterType') || 'userId';
-        if(filterValue !== state.filterValue || filterType !== state.filterType){
+    useEffect(() => {
+        const filterValue = searchParams.get('filter') || '';
+        const filterType = searchParams.get('filterType') || 'userId';
+        if (filterValue !== state.filterValue || filterType !== state.filterType) {
             dispatch({
                 type: AlbumsActions.setFilters,
                 filterValue,
@@ -41,8 +41,8 @@ export function Albums() {
             return;
         }
 
-        const page= Number.parseInt(searchParams.get('page') || '1');
-        if(page !== state.page){
+        const page = Number.parseInt(searchParams.get('page') || '1');
+        if (page !== state.page) {
             dispatch({
                 type: AlbumsActions.setPage,
                 page,
@@ -90,11 +90,11 @@ export function Albums() {
         setSearchParams(searchParams)
     }
 
-    if(isPending){
+    if (isPending) {
         return <div>Loading...</div>
     }
-    if(isError){
-        return <div>{'Error: '+error}</div>
+    if (isError) {
+        return <div>{'Error: ' + error}</div>
     }
 
     return (
@@ -140,7 +140,12 @@ export function Albums() {
                         <div className="content-center h-[140px]">
                             <AlbumPhotos albumId={album.id}></AlbumPhotos>
                         </div>
-                        <div className="bg-gray-200 p-2">User {album.userId}</div>
+                        <div className="bg-gray-200 p-2">
+                            By <a href={'/users/' + album.userId}
+                                  className="text-blue-600 visited:text-purple-600">
+                            User {album.userId}
+                        </a>
+                        </div>
                     </div>))}
             </div>
 

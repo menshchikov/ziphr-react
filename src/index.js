@@ -9,10 +9,11 @@ import {Dashboard} from "./components/Dashboard/Dashboard";
 import {Posts} from "./components/Posts/Posts";
 import {Albums} from "./components/Albums/Albums";
 import {Photos} from "./components/Photos/Photos";
-import {Photo} from "./components/Photos/Photo";
+import {Photo} from "./components/Photo/Photo";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Album} from "./components/Album/Album";
 import {Post} from "./components/Post/Post";
+import {User} from "./components/User/User";
 
 function NotFound() {
     return <div className="m-auto text-center h-[100vh] content-center">
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
             {path: 'albums/:id', element: (<Album/>)},
             {path: 'photos', element: (<Photos/>)},
             {path: 'photos/:id', element: (<Photo/>)},
+            {path: 'users/:id', element: (<User/>)},
         ],
         errorElement: (<NotFound/>),
     },
