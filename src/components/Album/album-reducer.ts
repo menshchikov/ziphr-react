@@ -1,14 +1,9 @@
 import {Photo} from "../../model/photo";
 import {AlbumState} from "./album-state";
 import {AlbumActions} from "./album-actions";
+import {getSlicedArray} from "../../services/utils";
 
 const PAGE_SIZE = 5;
-
-function getSlicedArray<T>(array: Array<T>, page: number, size: number): T[] {
-    const start = (page - 1) * size;
-    const end = start + size;
-    return array.slice(start, end);
-}
 
 function getFilteredByTitle(photos: Photo[], filter: string) {
     return photos.filter((p: Photo) => p.title.indexOf(filter) > -1);
