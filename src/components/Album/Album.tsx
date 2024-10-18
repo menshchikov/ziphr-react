@@ -43,7 +43,7 @@ export const Album = () => {
     });
 
     useEffect(() => {
-        const filter = searchParams.get("filter");
+        const filter = searchParams.get("filter") || '';
         if(filter !== state.filter){
             dispatch({
                 type: AlbumActions.setFilter,
@@ -74,6 +74,7 @@ export const Album = () => {
         } else {
             searchParams.set('filter', title);
         }
+        searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams);
     }
 

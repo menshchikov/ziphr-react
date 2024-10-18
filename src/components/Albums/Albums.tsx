@@ -30,15 +30,6 @@ export function Albums() {
     });
 
     useEffect(() =>{
-        const page= Number.parseInt(searchParams.get('page') || '1');
-        if(page !== state.page){
-            dispatch({
-                type: AlbumsActions.setPage,
-                page,
-            })
-            return;
-        }
-
         const filterValue= searchParams.get('filter') || '';
         const filterType= searchParams.get('filterType') || 'userId';
         if(filterValue !== state.filterValue || filterType !== state.filterType){
@@ -47,6 +38,15 @@ export function Albums() {
                 filterValue,
                 filterType,
             });
+            return;
+        }
+
+        const page= Number.parseInt(searchParams.get('page') || '1');
+        if(page !== state.page){
+            dispatch({
+                type: AlbumsActions.setPage,
+                page,
+            })
             return;
         }
 
@@ -79,12 +79,14 @@ export function Albums() {
     function onFilterChange(e: any) {
         const value = e.target.value;
         searchParams.set('filter', value);
+        searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams)
     }
 
     function onFilterTypeChange(e: any) {
         const value = e.target.value;
         searchParams.set('filterType', value);
+        searchParams.set('page', '1');
         setSearchParams(searchParams)
     }
 

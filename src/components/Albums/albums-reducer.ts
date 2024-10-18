@@ -43,7 +43,7 @@ export function albumsReducer(state: AlbumsState, action: any): AlbumsState {
                 page: 1,
                 filteredAlbums,
                 pages: Math.ceil(filteredAlbums.length / PAGE_SIZE),
-                pageAlbums: getSlicedArray(filteredAlbums, state.page, PAGE_SIZE),
+                pageAlbums: getSlicedArray(filteredAlbums, 1, PAGE_SIZE),
                 userId: action.filterType === 'userId' || !action.filterType ? action.filterValue: '',
             }
         }

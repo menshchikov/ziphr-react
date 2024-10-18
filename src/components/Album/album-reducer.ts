@@ -35,7 +35,8 @@ export function albumReducer(state: AlbumState, action: any): AlbumState {
                 filter: action.filter,
                 filteredPhotos: filteredByTitle,
                 pages: Math.ceil(filteredByTitle.length / PAGE_SIZE),
-                pagePhotos: getSlicedArray(filteredByTitle, state.page, PAGE_SIZE),
+                pagePhotos: getSlicedArray(filteredByTitle, 1, PAGE_SIZE),
+                page: 1,
             }
         }
         default: {
