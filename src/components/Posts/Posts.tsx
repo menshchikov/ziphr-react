@@ -1,66 +1,149 @@
-import React, {useMemo} from 'react';
-import {POSTS_MOCK} from "../../mocks/posts.mock";
+import React, {useEffect, useReducer, useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
-
-const PAGE_SIZE = 5;
+import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {debounce} from "lodash";
+import {PostsState} from "./posts-state";
+import {postsReducer} from "./posts-reducer";
+import {getPosts} from "../../services/post-api";
+import {PostsActions} from "./posts-actions";
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const page = useMemo(() => {
-        return Number.parseInt(searchParams.get("page") || '1');
-    }, [searchParams]);
+    const [state, dispatch]:[PostsState, any] = useReducer(postsReducer, {}, ():PostsState => {
+        const filterValue = searchParams.get('filter') || '';
+        const filterType = searchParams.get('filterType') || 'userId';
+        const userId = filterType === 'userId' || !filterType ? filterValue: '';
+        return {
+            page: Number.parseInt(searchParams.get('page') || '1'),
+            pages: 1,
+            filterValue,
+            filterType,
+            allPosts: [],
+            filteredPosts: [],
+            pagePosts: [],
+            userId,
+        }
+    });
 
-    const posts = useMemo(() => {
-        let start = (page - 1) * PAGE_SIZE;
-        let end = start + PAGE_SIZE;
-        return POSTS_MOCK.slice(start, end);
-    }, [page])
+    useEffect(() =>{
+        const filterValue= searchParams.get('filter') || '';
+        const filterType= searchParams.get('filterType') || 'userId';
+        if(filterValue !== state.filterValue || filterType !== state.filterType){
+            dispatch({
+                type: PostsActions.setFilters,
+                filterValue,
+                filterType,
+            });
+            return;
+        }
 
-    const pages = Math.ceil(POSTS_MOCK.length / PAGE_SIZE);
+        const page= Number.parseInt(searchParams.get('page') || '1');
+        if(page !== state.page){
+            dispatch({
+                type: PostsActions.setPage,
+                page,
+            })
+            return;
+        }
+
+    }, [searchParams])
+
+    useQueryClient();
+    const {isPending, isError, error} = useQuery({
+        queryKey: ['posts', state.userId],
+        queryFn: async () => {
+            const posts = await getPosts(state.userId);
+            dispatch({
+                type: PostsActions.setPosts,
+                posts,
+            })
+            return posts;
+        },
+    });
 
     function pageChange(num: number) {
-        setSearchParams({'page': num.toString(10)});
+        searchParams.set('page', num.toString());
+        setSearchParams(searchParams);
     }
 
-    return (<div>
+    const setSearchParamsDebounced = useRef(
+        debounce((searchParams) => {
+            setSearchParams(searchParams);
+        }, 500)
+    ).current;
 
-        <nav aria-label="breadcrumb">
-            <ol className="flex flex-row gap-2">
-                <li className="breadcrumb-item"><a className="text-blue-600 visited:text-purple-600"
-                                                   href="/dashboard">Dashboard</a></li>
-                <li>/</li>
-                <li className="breadcrumb-item active" aria-current="page">Posts</li>
-            </ol>
-        </nav>
+    function onFilterChange(e: any) {
+        const value = e.target.value;
+        searchParams.set('filter', value);
+        searchParams.set('page', '1');
+        setSearchParamsDebounced(searchParams)
+    }
+
+    function onFilterTypeChange(e: any) {
+        const value = e.target.value;
+        searchParams.set('filterType', value);
+        searchParams.set('page', '1');
+        setSearchParams(searchParams)
+    }
+
+    if(isPending){
+        return <div>Loading...</div>
+    }
+    if(isError){
+        return <div>{'Error: '+error}</div>
+    }
+
+    return (<div className="p-2">
+
+        <ol className="flex flex-row gap-2">
+            <li className="breadcrumb-item">
+                <a className="text-blue-600 visited:text-purple-600"
+                   href="/dashboard">Dashboard</a>
+            </li>
+            <li>/</li>
+            <li className="font-bold text-blue-700">Posts</li>
+        </ol>
 
         <h1 className="text-4xl font-bold my-4">Posts</h1>
 
-        {/* todo filters */}
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            <div>
+                <label className="block font-bold">Filter</label>
+                <input type="text" defaultValue={state.filterValue}
+                       className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+            </div>
 
-        <div className="m-2">
-            <table className="table">
-                <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Content</th>
-                </tr>
-                </thead>
-                <tbody>
-                {posts.map(post => <tr key={post.id}>
-                    <th scope="row">{post.id}</th>
-                    <td><a className="text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
-                    <td><a className="" href={"posts/" + post.id}>{post.title}</a></td>
-                    <td>{post.body}</td>
-                </tr>)}
-                </tbody>
-            </table>
-
-            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}></Paginator>
-
+            <div>
+                <label className="block font-bold">Filter type</label>
+                <select onChange={onFilterTypeChange} value={state.filterType}
+                        className="border-2 border-gray-200 rounded-lg p-2">
+                    <option value="userId">User ID</option>
+                    <option value="title">Title</option>
+                </select>
+            </div>
         </div>
+
+        <table cellSpacing={5} cellPadding={5} className="table mt-3">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">User</th>
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
+            </tr>
+            </thead>
+            <tbody>
+            {state.pagePosts.map(post => <tr key={post.id}>
+                <th className="border-b border-r-gray-200">{post.id}</th>
+                <td className="border-b border-r-gray-200"><a className="text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
+                <td className="border-b border-r-gray-200"><a className="" href={"posts/" + post.id}>{post.title}</a></td>
+                <td className="border-b border-r-gray-200">{post.body}</td>
+            </tr>)}
+            </tbody>
+        </table>
+
+        <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}></Paginator>
     </div>);
 }
