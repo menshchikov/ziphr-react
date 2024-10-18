@@ -43,7 +43,7 @@ export const Photo = () => {
         </ol>
         <h1>{query.data.title}</h1>
         <a className="text-blue-600 visited:text-purple-600" href={"/albums/" + query.data.albumId}>View Album</a>
-        {!showImg && <Loader/>}
+        {!showImg && (<div><Loader/></div>)}
         <img src={query.data.url}
              alt={query.data.url.split('/').pop()}
              onLoad={() => setShowImg(true)}
