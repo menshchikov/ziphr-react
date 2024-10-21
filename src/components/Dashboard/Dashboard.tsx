@@ -32,20 +32,20 @@ export function Dashboard() {
                             <Loader/>
                         )}
                         <div className="grid grid-cols-1 xl:grid-cols-3 p-2">
-                                <div>
+                            <div>
                                 <span
                                     className="text-[#32cd32] text-lg font-bold">{postsQuery.data?.length}</span> Posts
-                                </div>
-                                <div>
+                            </div>
+                            <div>
                                 <span
                                     className="text-[#32cd32] text-lg font-bold">{albumsQuery.data?.length}</span> Albums
-                                </div>
-                                <div>
+                            </div>
+                            <div>
                                 <span
                                     className="text-[#32cd32] text-lg font-bold">{photosQuery.data?.length}</span> Photos
-                                </div>
                             </div>
                         </div>
+                    </div>
 
                     <div className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="font-bold p-2 bg-gray-200">Latest Posts</div>
