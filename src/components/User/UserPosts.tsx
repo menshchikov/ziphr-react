@@ -1,6 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
 import {getPosts} from "../../services/post-api";
-import React from "react";
 import {Loader} from "../Loader";
 
 export function UserPosts(props: { userId: string | undefined }) {

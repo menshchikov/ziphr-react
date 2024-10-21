@@ -1,7 +1,6 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useParams} from "react-router-dom";
 import {getPostById} from "../../services/post-api";
-import React from "react";
 import {Loader} from "../Loader";
 
 export const Post = () => {

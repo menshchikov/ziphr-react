@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useRef} from 'react';
+import {useEffect, useReducer, useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";

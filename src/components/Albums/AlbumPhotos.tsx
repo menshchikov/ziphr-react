@@ -1,6 +1,5 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPhotos} from "../../services/photo-api";
-import React from "react";
 import {Loader} from "../Loader";
 
 export function AlbumPhotos(props: { albumId: number }) {
@@ -20,7 +19,6 @@ export function AlbumPhotos(props: { albumId: number }) {
             <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
                      className="w-full h-[4rem] object-cover"/>
-                {/*<div className="line-clamp-1 p-1">{photo.title}</div>*/}
             </div>
         </a>)}
     </div>;

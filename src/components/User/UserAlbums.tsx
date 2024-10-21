@@ -1,6 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
 import {getAlbums} from "../../services/album-api";
-import React from "react";
 import {Loader} from "../Loader";
 
 export function UserAlbums(props: { userId: string | undefined }) {
