@@ -1,6 +1,7 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {useParams} from "react-router-dom";
 import {getPostById} from "../../services/post-api";
+import {Loader} from "../Loader";
 
 export const Post = () => {
     const {id} = useParams();
@@ -11,7 +12,7 @@ export const Post = () => {
     })
 
     if(isPending){
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if(isError){
         return <div>{'Error: '+error}</div>

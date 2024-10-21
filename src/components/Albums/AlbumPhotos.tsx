@@ -1,5 +1,6 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPhotos} from "../../services/photo-api";
+import {Loader} from "../Loader";
 
 export function AlbumPhotos(props: { albumId: number }) {
     useQueryClient()
@@ -8,7 +9,7 @@ export function AlbumPhotos(props: { albumId: number }) {
         queryFn: () => getPhotos(props.albumId.toString()),
     });
     if (isPending) {
-        return <div className="m-auto w-[10rem]">Loading...</div>
+        return <Loader/>
     }
     if (isError) {
         return <div className="p-2">{'Error: ' + error}</div>

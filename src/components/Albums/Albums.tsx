@@ -8,6 +8,7 @@ import {AlbumsState} from "./albums-state";
 import {AlbumsActions} from "./albums-actions";
 import {albumsReducer} from "./albums-reducer";
 import {debounce} from "lodash";
+import {Loader} from "../Loader";
 
 export function Albums() {
 
@@ -91,7 +92,7 @@ export function Albums() {
     }
 
     if (isPending) {
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if (isError) {
         return <div>{'Error: ' + error}</div>

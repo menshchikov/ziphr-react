@@ -7,6 +7,7 @@ import {PostsState} from "./posts-state";
 import {postsReducer} from "./posts-reducer";
 import {getPosts} from "../../services/post-api";
 import {PostsActions} from "./posts-actions";
+import {Loader} from "../Loader";
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -88,10 +89,10 @@ export function Posts() {
         setSearchParams(searchParams)
     }
 
-    if(isPending){
-        return <div>Loading...</div>
+    if(isPending) {
+        return <Loader/>
     }
-    if(isError){
+    if (isError) {
         return <div>{'Error: '+error}</div>
     }
 

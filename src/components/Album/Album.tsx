@@ -79,7 +79,7 @@ export const Album = () => {
     }
 
     if (albumQuery.isPending || photosQuery.isPending) {
-        return <div>Loading...</div>
+        return <span className="loader m-2"></span>
     }
 
     if (albumQuery.isError || photosQuery.isError) {

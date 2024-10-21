@@ -3,6 +3,7 @@ import { useParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPhotoById} from "../../services/photo-api";
 import classNames from "classnames";
+import {Loader} from "../Loader";
 
 export const Photo = () => {
     const {id} = useParams();
@@ -12,7 +13,7 @@ export const Photo = () => {
     const query = useQuery({queryKey: ['photo', id], queryFn: () => getPhotoById(id || '0')});
 
     if(query.isPending){
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if(query.isError) {
         return <div className="p-2">
@@ -42,7 +43,7 @@ export const Photo = () => {
         </ol>
         <h1>{query.data.title}</h1>
         <a className="text-blue-600 visited:text-purple-600" href={"/albums/" + query.data.albumId}>View Album</a>
-        {!showImg && <div>Loading...</div>}
+        {!showImg && (<div><Loader/></div>)}
         <img src={query.data.url}
              alt={query.data.url.split('/').pop()}
              onLoad={() => setShowImg(true)}
