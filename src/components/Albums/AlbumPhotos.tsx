@@ -1,6 +1,5 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPhotos} from "../../services/photo-api";
-import React from "react";
 
 export function AlbumPhotos(props: { albumId: number }) {
     useQueryClient()

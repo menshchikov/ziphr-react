@@ -1,7 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import {useParams} from "react-router-dom";
 import {getUserById} from "../../services/user-api";
-import React from "react";
 import {UserAlbums} from "./UserAlbums";
 import {UserPosts} from "./UserPosts";
 

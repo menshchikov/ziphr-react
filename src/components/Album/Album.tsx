@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer, useRef} from 'react';
+import {useEffect, useReducer, useRef} from 'react';
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getAlbumById} from "../../services/album-api";

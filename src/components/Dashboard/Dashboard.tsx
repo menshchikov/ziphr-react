@@ -1,4 +1,3 @@
-import React from 'react';
 import {POSTS_MOCK} from "../../mocks/posts.mock";
 import {PHOTOS_MOCK} from "../../mocks/photos.mock";
 import {ALBUMS_MOCK} from "../../mocks/albums.mock";

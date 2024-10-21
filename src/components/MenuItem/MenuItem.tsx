@@ -1,5 +1,4 @@
 import { useLocation } from 'react-router-dom';
-import React from 'react';
 import classNames from "classnames";
 
 export interface MenuItemProps {
