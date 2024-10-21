@@ -4,6 +4,7 @@ import {getUserById} from "../../services/user-api";
 import React from "react";
 import {UserAlbums} from "./UserAlbums";
 import {UserPosts} from "./UserPosts";
+import {Loader} from "../Loader";
 
 export const User = () => {
     const {id} = useParams();
@@ -13,7 +14,7 @@ export const User = () => {
     })
 
     if(isPending){
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if(isError){
         return <div>{'Error: '+error}</div>
@@ -35,10 +36,12 @@ export const User = () => {
             </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-3 ">
-            <div className="border border-gray-200 rounded-lg p-2">
+            <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="bg-gray-200 p-2 font-bold">Albums</div>
                 <UserAlbums userId={id}></UserAlbums>
             </div>
-            <div className="border border-gray-200 rounded-lg p-2">
+            <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <div className="bg-gray-200 p-2 font-bold">Photos</div>
                 <UserPosts userId={id}></UserPosts>
             </div>
         </div>

@@ -8,6 +8,7 @@ import {getPhotos} from "../../services/photo-api";
 import {State} from "./photos-state";
 import {reducer} from "./photos-reducer";
 import {ACTIONS} from "./photos-actions";
+import {Loader} from "../Loader";
 
 export function Photos() {
 
@@ -87,7 +88,7 @@ export function Photos() {
     }
 
     if (isLoading) {
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if (isError) {
         return <div>{"Error: " + error}</div>

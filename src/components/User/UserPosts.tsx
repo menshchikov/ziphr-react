@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {getPosts} from "../../services/post-api";
 import React from "react";
+import {Loader} from "../Loader";
 
 export function UserPosts(props: { userId: string | undefined }) {
     const {isPending, isError, data: posts, error} = useQuery({
@@ -8,12 +9,12 @@ export function UserPosts(props: { userId: string | undefined }) {
         queryFn: () => getPosts(props.userId),
     });
     if (isPending) {
-        return <div>Loading...</div>
+        return <Loader/>
     }
     if (isError) {
         return <div>{'Error: ' + error}</div>
     }
-    return <div>
+    return <div className="p-2">
         {posts?.map(post => {
             return <div className="py-2">
                 <a href={'/posts/' + post.id}
