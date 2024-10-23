@@ -57,7 +57,7 @@ export function Posts() {
         queryFn: async () => {
             const filter = searchParams.get('filter');
             const type = searchParams.get('filterType');
-            const page = Number(searchParams.get('page'));
+            const page = Number(searchParams.get('page')) || 1;
             const userId = filter && type !== 'title' ? filter : undefined;
             let posts = await getPosts(userId);
             if (filter && type === 'title') {
@@ -94,9 +94,6 @@ export function Posts() {
         setSearchParams(searchParams)
     }
 
-    // if(isPending) {
-    //     return <Loader/>
-    // }
     if (isError) {
         return <div>{'Error: '+error}</div>
     }
@@ -132,7 +129,7 @@ export function Posts() {
         </div>
         {isPending
             ? <Loader/>
-            : <PostsTable postsCollection={postsCollection} page={Number(searchParams.get('page'))}
+            : <PostsTable postsCollection={postsCollection} page={Number(searchParams.get('page')) || 1}
                           pageChange={pageChange}/>
         }
     </div>);
