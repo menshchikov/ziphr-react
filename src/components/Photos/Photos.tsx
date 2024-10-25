@@ -14,8 +14,9 @@ export function Photos() {
     const filterValue = searchParams.get("filter") || '';
     const filterType = searchParams.get("filterType") || 'albumId';
     const page = Number(searchParams.get("page")) || 1;
-
-    const {isPending, isError, error, photos, pages} = usePhotos(filterType, filterValue, page, PAGE_SIZE);
+    const albumId = filterType === 'albumId' ? filterValue : '';
+    const title = filterType === 'title' ? filterValue : '';
+    const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
 
     const setSearchParamsDebounced = React.useRef(
         debounce((qParams) => {

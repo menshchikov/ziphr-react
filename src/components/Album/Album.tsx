@@ -1,27 +1,21 @@
-import {useEffect, useReducer, useRef} from 'react';
+import {useRef} from 'react';
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getAlbumById} from "../../services/album-api";
-import {getPhotos} from "../../services/photo-api";
 import {Paginator} from "../Paginator";
 import {debounce} from "lodash";
-import {AlbumState} from "./album-state";
-import {AlbumActions} from "./album-actions";
-import {albumReducer} from "./album-reducer";
+import {Loader} from "../Loader.tsx";
+import {usePhotos} from "../Photos/usePhotos.ts";
+
+const PAGE_SIZE = 5;
 
 export const Album = () => {
     const {id} = useParams();
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [state, dispatch]: [AlbumState, any] = useReducer(albumReducer, {
-        page: Number.parseInt(searchParams.get("page") || '1'),
-        pages: 1,
-        filter: searchParams.get("filter") || '',
-        photos: [],
-        filteredPhotos: [],
-        pagePhotos:[],
-    });
+    const page = Number(searchParams.get("page")) || 1;
+    const titleFilter = searchParams.get("filter") || ''
 
     const pageChange = (page: number) => {
         searchParams.set('page', page.toString());
@@ -30,36 +24,8 @@ export const Album = () => {
 
     useQueryClient();
     const albumQuery = useQuery({queryKey: ['album', id], queryFn: () => getAlbumById(id || '0')});
-    const photosQuery = useQuery({
-        queryKey: ['photos', id],
-        queryFn: async () => {
-            const result = await getPhotos(id);
-            dispatch({
-                type: AlbumActions.setPhotos,
-                photos: result,
-            });
-            return result;
-        }
-    });
+    const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
-    useEffect(() => {
-        const filter = searchParams.get("filter") || '';
-        if(filter !== state.filter){
-            dispatch({
-                type: AlbumActions.setFilter,
-                filter,
-            });
-            return;
-        }
-        const page = Number.parseInt(searchParams.get("page") || '1');
-        if(page !== state.page){
-            dispatch({
-                type: AlbumActions.setPage,
-                page,
-            });
-            return;
-        }
-    }, [searchParams])
 
     const setSearchParamsDebounced = useRef(
         debounce((searchParams) => {
@@ -79,7 +45,7 @@ export const Album = () => {
     }
 
     if (albumQuery.isPending || photosQuery.isPending) {
-        return <span className="loader m-2"></span>
+        return <Loader/>
     }
 
     if (albumQuery.isError || photosQuery.isError) {
@@ -88,7 +54,7 @@ export const Album = () => {
         </div>
     }
 
-    if (!albumQuery.data || !photosQuery.data) {
+    if (!albumQuery.data || !photosQuery.photos) {
         return <div className="p-2">
             <h1>Photo not found</h1>
         </div>
@@ -114,12 +80,12 @@ export const Album = () => {
 
         <div className="my-3">
             <label className="block font-bold">Filter by title</label>
-            <input type="text" defaultValue={state.filter || ''}
+            <input type="text" defaultValue={titleFilter || ''}
                    className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {state.pagePhotos.map((photo) => (
+            {photosQuery.photos.map((photo) => (
                 <a key={photo.id}
                    className="border border-gray-200 rounded-lg overflow-hidden text-blue-600 visited:text-purple-600"
                    href={'/photos/' + photo.id}
@@ -131,6 +97,6 @@ export const Album = () => {
             ))}
         </div>
 
-        <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}/>
+        <Paginator currentPageNum={page} totalPagesCount={photosQuery.pages} pageChanged={pageChange}/>
     </div>
 }
