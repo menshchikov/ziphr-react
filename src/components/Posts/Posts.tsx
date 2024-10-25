@@ -1,68 +1,19 @@
-import {useEffect, useReducer, useRef} from 'react';
+import {useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {debounce} from "lodash";
-import {PostsState} from "./posts-state";
-import {postsReducer} from "./posts-reducer";
-import {getPosts} from "../../services/post-api";
-import {PostsActions} from "./posts-actions";
 import {Loader} from "../Loader";
+import {usePosts} from "./usePosts.ts";
+
+const PAGE_SIZE = 5;
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
+    const filterType = searchParams.get('filterType') || 'userId';
+    const filter = searchParams.get('filter') || '';
+    const page = Number(searchParams.get('page')) || 1;
 
-    const [state, dispatch]:[PostsState, any] = useReducer(postsReducer, {}, ():PostsState => {
-        const filterValue = searchParams.get('filter') || '';
-        const filterType = searchParams.get('filterType') || 'userId';
-        const userId = filterType === 'userId' || !filterType ? filterValue: '';
-        return {
-            page: Number.parseInt(searchParams.get('page') || '1'),
-            pages: 1,
-            filterValue,
-            filterType,
-            allPosts: [],
-            filteredPosts: [],
-            pagePosts: [],
-            userId,
-        }
-    });
-
-    useEffect(() =>{
-        const filterValue= searchParams.get('filter') || '';
-        const filterType= searchParams.get('filterType') || 'userId';
-        if(filterValue !== state.filterValue || filterType !== state.filterType){
-            dispatch({
-                type: PostsActions.setFilters,
-                filterValue,
-                filterType,
-            });
-            return;
-        }
-
-        const page= Number.parseInt(searchParams.get('page') || '1');
-        if(page !== state.page){
-            dispatch({
-                type: PostsActions.setPage,
-                page,
-            })
-            return;
-        }
-
-    }, [searchParams])
-
-    useQueryClient();
-    const {isPending, isError, error} = useQuery({
-        queryKey: ['posts', state.userId],
-        queryFn: async () => {
-            const posts = await getPosts(state.userId);
-            dispatch({
-                type: PostsActions.setPosts,
-                posts,
-            })
-            return posts;
-        },
-    });
+    let {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString());
@@ -77,14 +28,18 @@ export function Posts() {
 
     function onFilterChange(e: any) {
         const value = e.target.value;
-        searchParams.set('filter', value);
+        if(value) {
+            searchParams.set("filter", value);
+        }else{
+            searchParams.delete("filter");
+        }
         searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams)
     }
 
     function onFilterTypeChange(e: any) {
         const value = e.target.value;
-        searchParams.set('filterType', value);
+        searchParams.set("filterType", value);
         searchParams.set('page', '1');
         setSearchParams(searchParams)
     }
@@ -111,14 +66,14 @@ export function Posts() {
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <div>
-                <label className="block font-bold">Filter</label>
-                <input type="text" defaultValue={state.filterValue}
+                <label htmlFor="filter" className="block font-bold">Filter</label>
+                <input id="filter" type="text" defaultValue={filter}
                        className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
             </div>
 
             <div>
-                <label className="block font-bold">Filter type</label>
-                <select onChange={onFilterTypeChange} value={state.filterType}
+                <label htmlFor="filterType" className="block font-bold">Filter type</label>
+                <select id="filterType" onChange={onFilterTypeChange} value={filterType}
                         className="border-2 border-gray-200 rounded-lg p-2">
                     <option value="userId">User ID</option>
                     <option value="title">Title</option>
@@ -136,7 +91,7 @@ export function Posts() {
             </tr>
             </thead>
             <tbody>
-            {state.pagePosts.map(post => <tr key={post.id}>
+            {posts.map(post => <tr key={post.id}>
                 <th className="border-b border-r-gray-200">{post.id}</th>
                 <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600 text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
                 <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600" href={"posts/" + post.id}>{post.title}</a></td>
@@ -145,6 +100,6 @@ export function Posts() {
             </tbody>
         </table>
 
-        <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}></Paginator>
+        <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}></Paginator>
     </div>);
 }
