@@ -1,71 +1,27 @@
-import React, {useEffect, useReducer} from 'react';
+import React from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
-import {Photo} from "../../model/photo";
 import {debounce} from "lodash";
-import {useQuery} from "@tanstack/react-query";
-import {getPhotos} from "../../services/photo-api";
-import {State} from "./photos-state";
-import {reducer} from "./photos-reducer";
-import {ACTIONS} from "./photos-actions";
 import {Loader} from "../Loader";
+import {usePhotos} from "./usePhotos.ts";
+
+const PAGE_SIZE = 5;
 
 export function Photos() {
 
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const filterValue = searchParams.get("filter") || '';
+    const filterType = searchParams.get("filterType") || 'albumId';
+    const page = Number(searchParams.get("page")) || 1;
+
+    const {isPending, isError, error, photos, pages} = usePhotos(filterType, filterValue, page, PAGE_SIZE);
+
     const setSearchParamsDebounced = React.useRef(
-        debounce((searchParams) => {
-            setSearchParams(searchParams);
+        debounce((qParams) => {
+            setSearchParams(qParams);
         }, 500)
     ).current;
-
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [state, dispatch]: [State, any] = useReducer(reducer, {}, () => {
-        let filterValue = searchParams.get("filter") || '';
-        let filterType = searchParams.get("filterType") || 'albumId';
-        let page = Number.parseInt(searchParams.get("page") || '1');
-        return {
-            page,
-            pages: 1,
-            filterValue,
-            filterType,
-            allPhotos: [],
-            pagePhotos: [],
-            queryKey: filterType === 'albumId' ? filterValue : '',
-        }
-    })
-
-    const {isLoading, isError, error} = useQuery<Photo[]>({
-        queryKey: ['photos', state.queryKey],
-        queryFn: async () => {
-            const result = await getPhotos(state.filterType === 'albumId' && state.filterValue ? state.filterValue : undefined);
-            dispatch({
-                type: ACTIONS.setPhotos,
-                photos: result
-            })
-            return result;
-        },
-    })
-
-    useEffect(() => {
-        let filterValue = searchParams.get("filter") || '';
-        let filterType = searchParams.get("filterType") || 'albumId';
-        if (filterValue != state.filterValue || filterType != state.filterType) {
-            dispatch({
-                type: ACTIONS.setFilter,
-                filterValue,
-                filterType,
-            })
-            return;
-        }
-
-        let page = Number.parseInt(searchParams.get("page") || '1');
-        if (page !== state.page) {
-            dispatch({
-                type: ACTIONS.setPage,
-                page: page,
-            })
-        }
-    }, [searchParams]);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString(10));
@@ -74,20 +30,18 @@ export function Photos() {
 
     function onFilterChange(e: any) {
         searchParams.set('filter', e.target.value);
-        searchParams.set('filterType', state.filterType);
+        searchParams.set('filterType', filterType);
         searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams);
     }
 
     function onFilterTypeChange(e: any) {
         searchParams.set('filterType', e.target.value);
-        if (state.filterValue.length > 0) {
-            searchParams.set('page', '1');
-        }
+        searchParams.set('page', '1');
         setSearchParams(searchParams);
     }
 
-    if (isLoading) {
+    if (isPending) {
         return <Loader/>
     }
     if (isError) {
@@ -110,13 +64,13 @@ export function Photos() {
 
                 <div>
                     <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={state.filterValue}
+                    <input type="text" defaultValue={filterValue}
                            className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
                 </div>
 
                 <div>
                     <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={state.filterType}
+                    <select onChange={onFilterTypeChange} value={filterType}
                             className="border-2 border-gray-200 rounded-lg p-2">
                         <option value="albumId">Album ID</option>
                         <option value="title">Title</option>
@@ -127,7 +81,7 @@ export function Photos() {
             <h1 className="text-4xl font-bold my-4">Photos</h1>
 
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {state.pagePhotos?.map((photo) => (
+                {photos?.map((photo) => (
                     <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <a href={'/photos/' + photo.id} className="text-blue-600 visited:text-purple-600">
                             <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
@@ -139,7 +93,7 @@ export function Photos() {
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
         </div>
     );
 }

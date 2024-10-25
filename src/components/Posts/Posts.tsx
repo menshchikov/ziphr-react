@@ -1,40 +1,19 @@
 import {useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {debounce} from "lodash";
-import {getPosts} from "../../services/post-api";
 import {Loader} from "../Loader";
-import {getSlicedArray} from "../../services/utils.ts";
-import {Post} from "../../model/post.ts";
+import {usePosts} from "./usePosts.ts";
 
 const PAGE_SIZE = 5;
-
-export function getFilteredPostsByTitle(posts: Post[], filter: string) {
-    return posts.filter((a: Post) => a.title.indexOf(filter) > -1);
-}
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
     const filterType = searchParams.get('filterType') || 'userId';
     const filter = searchParams.get('filter') || '';
-    const userId = filterType === 'userId' ? filter : '';
     const page = Number(searchParams.get('page')) || 1;
 
-    useQueryClient();
-    const {isPending, data, isError, error} = useQuery({
-        queryKey: ['posts', userId],
-        queryFn: () => getPosts(userId),
-    });
-
-    let posts = data || [];
-    if(filterType === 'title'){
-        if(filter){
-            posts = getFilteredPostsByTitle(posts, filter);
-        }
-    }
-    const pages = Math.ceil(posts.length / PAGE_SIZE);
-    posts = getSlicedArray(posts, page, PAGE_SIZE)
+    let {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString());
