@@ -13,6 +13,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Album} from "./components/Album/Album";
 import {Post} from "./components/Post/Post";
 import {User} from "./components/User/User";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 function NotFound() {
     return <div className="m-auto text-center h-[100vh] content-center">
@@ -47,6 +48,7 @@ createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen/>
         </QueryClientProvider>
     </StrictMode>
 );
