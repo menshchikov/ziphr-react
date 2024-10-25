@@ -1,7 +1,6 @@
 import { MenuItem } from '../MenuItem/MenuItem';
 
 export function Menu() {
-    console.log('menu');
     return (
         <div className={'nav nav-pills flex-column'}>
             <MenuItem path={'/dashboard'} title={'Dashboard'}></MenuItem>

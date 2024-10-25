@@ -20,7 +20,6 @@ export function Posts() {
     const filter = searchParams.get('filter') || '';
     const userId = filterType === 'userId' ? filter : '';
     const page = Number(searchParams.get('page')) || 1;
-    console.log('fType:',filterType,' filter:', filter,' p:', page);
 
     useQueryClient();
     const {isPending, data, isError, error} = useQuery({
@@ -36,8 +35,6 @@ export function Posts() {
     }
     const pages = Math.ceil(posts.length / PAGE_SIZE);
     posts = getSlicedArray(posts, page, PAGE_SIZE)
-
-    console.log('loading:', isPending, ' data:', data?.length, 'pages:', pages, 'posts: ', posts.length);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString());
