@@ -1,70 +1,22 @@
-import {useEffect, useReducer, useRef} from 'react';
+import {useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {getAlbums} from "../../services/album-api";
-import {AlbumPhotos} from "./AlbumPhotos";
-import {AlbumsState} from "./albums-state";
-import {AlbumsActions} from "./albums-actions";
-import {albumsReducer} from "./albums-reducer";
+import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
+import {useAlbums} from "./useAlbums.ts";
+
+const PAGE_SIZE = 5;
 
 export function Albums() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [state, dispatch]: [AlbumsState, any] = useReducer(albumsReducer, {}, () => {
-        const filterValue = searchParams.get('filter') || '';
-        const filterType = searchParams.get('filterType') || 'userId';
-        const userId = filterType === 'userId' || !filterType ? filterValue : '';
-        return {
-            page: Number.parseInt(searchParams.get('page') || '1'),
-            pages: 1,
-            filterValue,
-            filterType,
-            allAlbums: [],
-            filteredAlbums: [],
-            pageAlbums: [],
-            userId,
-        }
-    });
+    const filterValue = searchParams.get('filter') || '';
+    const filterType = searchParams.get('filterType') || 'userId';
+    const page = Number(searchParams.get('page')) || 1;
 
-    useEffect(() => {
-        const filterValue = searchParams.get('filter') || '';
-        const filterType = searchParams.get('filterType') || 'userId';
-        if (filterValue !== state.filterValue || filterType !== state.filterType) {
-            dispatch({
-                type: AlbumsActions.setFilters,
-                filterValue,
-                filterType,
-            });
-            return;
-        }
-
-        const page = Number.parseInt(searchParams.get('page') || '1');
-        if (page !== state.page) {
-            dispatch({
-                type: AlbumsActions.setPage,
-                page,
-            })
-            return;
-        }
-
-    }, [searchParams])
-
-    useQueryClient();
-    const {isPending, isError, error} = useQuery({
-        queryKey: ['albums', state.userId],
-        queryFn: async () => {
-            const albums = await getAlbums(state.userId);
-            dispatch({
-                type: AlbumsActions.setAlbums,
-                albums,
-            })
-            return albums;
-        },
-    });
+    const {isPending, isError, error, result: albums, pages} = useAlbums(filterType, filterValue, page, PAGE_SIZE);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString());
@@ -115,13 +67,13 @@ export function Albums() {
 
                 <div>
                     <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={state.filterValue}
+                    <input type="text" defaultValue={filterValue}
                            className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
                 </div>
 
                 <div>
                     <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={state.filterType}
+                    <select onChange={onFilterTypeChange} value={filterType}
                             className="border-2 border-gray-200 rounded-lg p-2">
                         <option value="userId">User ID</option>
                         <option value="title">Title</option>
@@ -130,7 +82,7 @@ export function Albums() {
             </div>
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 mt-3">
-                {state.pageAlbums.map((album) => (
+                {albums.map((album) => (
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
@@ -139,7 +91,7 @@ export function Albums() {
                             </a>
                         </div>
                         <div className="content-center h-[140px]">
-                            <AlbumPhotos albumId={album.id}></AlbumPhotos>
+                            <AlbumCardPhotos albumId={album.id}></AlbumCardPhotos>
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
@@ -150,7 +102,7 @@ export function Albums() {
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={state.page} totalPagesCount={state.pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
 
         </div>
     );
