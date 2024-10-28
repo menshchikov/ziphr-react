@@ -13,15 +13,7 @@ import {Album} from "./components/Album/Album";
 import {Post} from "./components/Post/Post";
 import {User} from "./components/User/User";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
-
-function NotFound() {
-    return <div className="m-auto text-center h-[100vh] content-center">
-        <h1 className="text-5xl font-bold text-gray-800">Sorry, this page isn't available</h1>
-        <h2 className="text-3xl mt-2 text-gray-600">The link you followed may be broken, or the page may have been
-            removed.</h2>
-        <a href="/" className="mt-2 block text-blue-600 visited:text-purple-600">Go back to home page.</a>
-    </div>;
-}
+import {NotFound} from "./NotFound.tsx";
 
 const router = createBrowserRouter([
     {

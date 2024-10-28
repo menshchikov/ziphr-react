@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
@@ -29,14 +29,14 @@ export function Photos() {
         setSearchParams(searchParams);
     }
 
-    function onFilterChange(e: any) {
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         searchParams.set('filter', e.target.value);
         searchParams.set('filterType', filterType);
         searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams);
     }
 
-    function onFilterTypeChange(e: any) {
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         searchParams.set('filterType', e.target.value);
         searchParams.set('page', '1');
         setSearchParams(searchParams);

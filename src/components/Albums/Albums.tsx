@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {ChangeEvent, useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
@@ -29,14 +29,14 @@ export function Albums() {
         }, 500)
     ).current;
 
-    function onFilterChange(e: any) {
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
         searchParams.set('filter', value);
         searchParams.set('page', '1');
         setSearchParamsDebounced(searchParams)
     }
 
-    function onFilterTypeChange(e: any) {
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
         searchParams.set('filterType', value);
         searchParams.set('page', '1');

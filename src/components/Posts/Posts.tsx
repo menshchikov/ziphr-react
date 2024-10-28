@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {ChangeEvent, useRef} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
@@ -13,7 +13,7 @@ export function Posts() {
     const filter = searchParams.get('filter') || '';
     const page = Number(searchParams.get('page')) || 1;
 
-    let {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
+    const {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
 
     function pageChange(num: number) {
         searchParams.set('page', num.toString());
@@ -26,7 +26,7 @@ export function Posts() {
         }, 500)
     ).current;
 
-    function onFilterChange(e: any) {
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
         if(value) {
             searchParams.set("filter", value);
@@ -37,7 +37,7 @@ export function Posts() {
         setSearchParamsDebounced(searchParams)
     }
 
-    function onFilterTypeChange(e: any) {
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
         searchParams.set("filterType", value);
         searchParams.set('page', '1');

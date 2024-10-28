@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import {ChangeEvent, useRef} from 'react';
 import {useParams, useSearchParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getAlbumById} from "../../services/album-api";
@@ -33,7 +33,7 @@ export const Album = () => {
         }, 500)
     ).current;
 
-    function onFilterChange(e: any) {
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const title = e.target.value;
         if (!title) {
             searchParams.delete('filter');
