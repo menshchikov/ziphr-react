@@ -1,5 +1,5 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {filterArrayByTitle, getSlicedArray} from "../../services/utils.ts";
+import {filterArrayByTitle, paginateArray} from "../../services/utils.ts";
 import {getPhotos} from "../../services/photo-api.ts";
 
 export function usePhotos(albumId: string, title: string, page: number, pageSize: number) {
@@ -14,6 +14,6 @@ export function usePhotos(albumId: string, title: string, page: number, pageSize
             photos = filterArrayByTitle(photos, title);
     }
     const pages = Math.ceil(photos.length / pageSize);
-    photos = getSlicedArray(photos, page, pageSize)
+    photos = paginateArray(photos, page, pageSize)
     return {isPending, isError, error, photos, pages};
 }

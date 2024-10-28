@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPhotoById} from "../../services/photo-api";
-import classNames from "classnames";
 import {Loader} from "../Loader";
 
 export const Photo = () => {
@@ -48,9 +47,7 @@ export const Photo = () => {
              alt={query.data.url.split('/').pop()}
              onLoad={() => setShowImg(true)}
              onError={() => setShowImg(true)}
-             className={classNames([
-                 "w-auto bg-gray-200 rounded-lg h-[300px] md:h-[600px] object-cover m-auto",
-            ])}
+             className="w-auto bg-gray-200 rounded-lg h-[300px] md:h-[600px] object-cover m-auto"
         />
     </div>
 }

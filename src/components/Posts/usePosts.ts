@@ -1,6 +1,6 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import {getPosts} from "../../services/post-api.ts";
-import {filterArrayByTitle, getSlicedArray} from "../../services/utils.ts";
+import {filterArrayByTitle, paginateArray} from "../../services/utils.ts";
 
 export function usePosts(filterType: string, filter: string, page: number, pageSize: number) {
     useQueryClient();
@@ -17,6 +17,6 @@ export function usePosts(filterType: string, filter: string, page: number, pageS
         }
     }
     const pages = Math.ceil(posts.length / pageSize);
-    posts = getSlicedArray(posts, page, pageSize)
+    posts = paginateArray(posts, page, pageSize)
     return {isPending, isError, error, posts, pages};
 }
