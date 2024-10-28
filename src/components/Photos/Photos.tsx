@@ -24,7 +24,7 @@ export function Photos() {
         }, 500)
     ).current;
 
-    function pageChange(num: number) {
+    function onPageChange(num: number) {
         searchParams.set('page', num.toString(10));
         setSearchParams(searchParams);
     }
@@ -94,7 +94,7 @@ export function Photos() {
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={onPageChange}/>
         </div>
     );
 }

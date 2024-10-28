@@ -17,7 +17,7 @@ export const Album = () => {
     const page = Number(searchParams.get("page")) || 1;
     const titleFilter = searchParams.get("filter") || ''
 
-    const pageChange = (page: number) => {
+    const onPageChange = (page: number) => {
         searchParams.set('page', page.toString());
         setSearchParams(searchParams);
     }
@@ -97,6 +97,6 @@ export const Album = () => {
             ))}
         </div>
 
-        <Paginator currentPageNum={page} totalPagesCount={photosQuery.pages} pageChanged={pageChange}/>
+        <Paginator currentPageNum={page} totalPagesCount={photosQuery.pages} onPageChange={onPageChange}/>
     </div>
 }

@@ -3,13 +3,13 @@ import classNames from "classnames";
 export interface PaginatorProps {
     currentPageNum: number,
     totalPagesCount: number,
-    pageChanged: (num: number) => void,
+    onPageChange: (num: number) => void,
 }
 
 export const Paginator = (props: PaginatorProps) => {
-    const {currentPageNum, totalPagesCount, pageChanged} = props;
+    const {currentPageNum, totalPagesCount, onPageChange} = props;
 
-    let buttons: number[] = [];
+    let buttons: number[];
     if (totalPagesCount < 6) {
         buttons = Array.from({length: totalPagesCount}, (_, index) => index + 1)
     } else {
@@ -46,7 +46,7 @@ export const Paginator = (props: PaginatorProps) => {
                                        "border border-solid hover:bg-gray-200",
                                        {"text-white bg-blue-700": currentPageNum === num},
                                    ])}
-                                   onClick={() => pageChanged(num)}
+                                   onClick={() => onPageChange(num)}
                         >
                             {num}
                         </li>

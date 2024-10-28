@@ -18,7 +18,7 @@ export function Albums() {
 
     const {isPending, isError, error, result: albums, pages} = useAlbums(filterType, filterValue, page, PAGE_SIZE);
 
-    function pageChange(num: number) {
+    function onPageChange(num: number) {
         searchParams.set('page', num.toString());
         setSearchParams(searchParams);
     }
@@ -102,7 +102,7 @@ export function Albums() {
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={onPageChange}/>
 
         </div>
     );

@@ -15,7 +15,7 @@ export function Posts() {
 
     const {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
 
-    function pageChange(num: number) {
+    function onPageChange(num: number) {
         searchParams.set('page', num.toString());
         setSearchParams(searchParams);
     }
@@ -100,6 +100,6 @@ export function Posts() {
             </tbody>
         </table>
 
-        <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}></Paginator>
+        <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={onPageChange}></Paginator>
     </div>);
 }
