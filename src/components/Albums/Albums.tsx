@@ -23,11 +23,12 @@ export function Albums() {
         setSearchParams(searchParams);
     }
 
-    const setSearchParamsDebounced = useRef(
-        debounce((searchParams) => {
-            setSearchParams(searchParams);
-        }, 500)
-    ).current;
+ const setSearchParamsDebounced = useCallback(
+    debounce((searchParams) => {
+        setSearchParams(searchParams);
+    }, 500),
+    [setSearchParams]
+);
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
