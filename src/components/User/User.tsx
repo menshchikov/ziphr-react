@@ -7,7 +7,7 @@ import {Loader} from "../Loader";
 
 export const User = () => {
     const {id} = useParams();
-    const {isPending, isError, data:user, error} = useQuery({
+    const {isPending, isError, data: user, error} = useQuery({
         queryKey: ['user', id],
         queryFn: () => getUserById(id || '0'),
     })

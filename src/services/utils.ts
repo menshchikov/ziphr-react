@@ -4,7 +4,7 @@ export function paginateArray<T>(array: Array<T>, page: number, size: number): T
     return array.slice(start, end);
 }
 
-export function filterArrayByTitle<T extends {title: string}>(items: T[], filter: string):T[] {
-    let filterLowerCase = filter.toLowerCase();
+export function filterArrayByTitle<T extends {title: string}>(items: T[], filter: string): T[] {
+    const filterLowerCase = filter.toLowerCase();
     return items.filter(item => item.title.toLowerCase().indexOf(filterLowerCase) > -1);
 }

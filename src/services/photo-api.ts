@@ -6,7 +6,7 @@ export function getPhotoById(id: string): Promise<Photo> {
     return fetch(url + id).then(res => res.json())
 }
 
-export function getPhotos(albumId?:string): Promise<Photo[]> {
+export function getPhotos(albumId?: string): Promise<Photo[]> {
     let url = API_URL + '/photos';
     if (albumId) {
         url += '?albumId=' + albumId;
