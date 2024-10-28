@@ -1,7 +1,6 @@
 import {StrictMode} from 'react';
 import {createRoot} from 'react-dom/client';
 import './main.css';
-import './output.css';
 import App from './App';
 import {createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
 import {Dashboard} from "./components/Dashboard/Dashboard";
