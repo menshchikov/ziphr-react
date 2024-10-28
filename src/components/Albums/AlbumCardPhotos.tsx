@@ -1,9 +1,8 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getPhotos} from "../../services/photo-api";
 import {Loader} from "../Loader";
 
 export function AlbumCardPhotos(props: { albumId: number }) {
-    useQueryClient()
     const {isPending, isError, data, error} = useQuery({
         queryKey: ['photos', props.albumId],
         queryFn: () => getPhotos(props.albumId.toString()),

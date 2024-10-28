@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getPhotoById} from "../../services/photo-api";
 import {Loader} from "../Loader";
 
@@ -8,7 +8,6 @@ export const Photo = () => {
     const {id} = useParams();
     const [showImg, setShowImg] = React.useState(false);
 
-    useQueryClient();
     const query = useQuery({queryKey: ['photo', id], queryFn: () => getPhotoById(id || '0')});
 
     if(query.isPending){

@@ -1,9 +1,8 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getPosts} from "../../services/post-api.ts";
 import {filterArrayByTitle, paginateArray} from "../../services/utils.ts";
 
 export function usePosts(filterType: string, filter: string, page: number, pageSize: number) {
-    useQueryClient();
     const userId = filterType === 'userId' ? filter : '';
     const {isPending, data, isError, error} = useQuery({
         queryKey: ['posts', userId],

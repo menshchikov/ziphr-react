@@ -1,11 +1,10 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getAlbums} from "../../services/album-api";
 import {getPosts} from "../../services/post-api";
 import {getPhotos} from "../../services/photo-api";
 import {Loader} from "../Loader";
 
 export function Dashboard() {
-    useQueryClient();
     const albumsQuery = useQuery({
         queryKey: ['albums'],
         queryFn: () => getAlbums(),

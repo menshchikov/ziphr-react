@@ -1,11 +1,10 @@
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {useParams} from "react-router-dom";
 import {getPostById} from "../../services/post-api";
 import {Loader} from "../Loader";
 
 export const Post = () => {
     const {id} = useParams();
-    useQueryClient();
     const {isPending, isError, data: post, error} = useQuery({
         queryKey: ['post', id],
         queryFn: () => getPostById(id || '0'),

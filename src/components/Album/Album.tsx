@@ -1,6 +1,6 @@
 import {ChangeEvent, useRef} from 'react';
 import {useParams, useSearchParams} from "react-router-dom";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getAlbumById} from "../../services/album-api";
 import {Paginator} from "../Paginator";
 import {debounce} from "lodash";
@@ -22,7 +22,6 @@ export const Album = () => {
         setSearchParams(searchParams);
     }
 
-    useQueryClient();
     const albumQuery = useQuery({queryKey: ['album', id], queryFn: () => getAlbumById(id || '0')});
     const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
