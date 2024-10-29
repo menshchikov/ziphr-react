@@ -16,7 +16,7 @@ export function UserAlbums(props: { userId: string | undefined }) {
     return <div className="p-2">
         {albums?.map(album => {
             return <a href={'/albums/' + album.id}
-                      className="text-blue-600 visited:text-purple-600 block py-2">
+                className="text-blue-600 visited:text-purple-600 block py-2">
                 {album.title}
             </a>
         })}

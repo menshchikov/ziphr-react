@@ -28,7 +28,7 @@ export const Photo = () => {
         <ol className="flex flex-row gap-2">
             <li className="">
                 <a className="text-blue-600 visited:text-purple-600"
-                   href="/dashboard">Dashboard</a>
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="" aria-current="page">
@@ -43,10 +43,10 @@ export const Photo = () => {
         <a className="text-blue-600 visited:text-purple-600" href={"/albums/" + query.data.albumId}>View Album</a>
         {!showImg && (<div><Loader/></div>)}
         <img src={query.data.url}
-             alt={query.data.url.split('/').pop()}
-             onLoad={() => setShowImg(true)}
-             onError={() => setShowImg(true)}
-             className="w-auto bg-gray-200 rounded-lg h-[300px] md:h-[600px] object-cover m-auto"
+            alt={query.data.url.split('/').pop()}
+            onLoad={() => setShowImg(true)}
+            onError={() => setShowImg(true)}
+            className="w-auto bg-gray-200 rounded-lg h-[300px] md:h-[600px] object-cover m-auto"
         />
     </div>
 }

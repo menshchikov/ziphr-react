@@ -63,7 +63,7 @@ export const Album = () => {
         <ol className="flex flex-row gap-2">
             <li className="">
                 <a className="text-blue-600 visited:text-purple-600"
-                   href="/dashboard">Dashboard</a>
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="" aria-current="page">
@@ -80,17 +80,17 @@ export const Album = () => {
         <div className="my-3">
             <label className="block font-bold">Filter by title</label>
             <input type="text" defaultValue={titleFilter || ''}
-                   className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+                className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {photosQuery.photos.map((photo) => (
                 <a key={photo.id}
-                   className="border border-gray-200 rounded-lg overflow-hidden text-blue-600 visited:text-purple-600"
-                   href={'/photos/' + photo.id}
+                    className="border border-gray-200 rounded-lg overflow-hidden text-blue-600 visited:text-purple-600"
+                    href={'/photos/' + photo.id}
                 >
                     <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                         className="bg-gray-200 object-cover w-full h-[200px]"></img>
+                        className="bg-gray-200 object-cover w-full h-[200px]"></img>
                     <div className="p-1 line-clamp-2">{photo.title}</div>
                 </a>
             ))}

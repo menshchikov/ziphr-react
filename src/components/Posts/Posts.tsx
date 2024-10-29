@@ -56,7 +56,7 @@ export function Posts() {
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
                 <a className="text-blue-600 visited:text-purple-600"
-                   href="/dashboard">Dashboard</a>
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700">Posts</li>
@@ -68,13 +68,13 @@ export function Posts() {
             <div>
                 <label htmlFor="filter" className="block font-bold">Filter</label>
                 <input id="filter" type="text" defaultValue={filter}
-                       className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+                    className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
             </div>
 
             <div>
                 <label htmlFor="filterType" className="block font-bold">Filter type</label>
                 <select id="filterType" onChange={onFilterTypeChange} value={filterType}
-                        className="border-2 border-gray-200 rounded-lg p-2">
+                    className="border-2 border-gray-200 rounded-lg p-2">
                     <option value="userId">User ID</option>
                     <option value="title">Title</option>
                 </select>
@@ -83,20 +83,20 @@ export function Posts() {
 
         <table cellSpacing={5} cellPadding={5} className="table mt-3">
             <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">User</th>
-                <th scope="col">Title</th>
-                <th scope="col">Content</th>
-            </tr>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Content</th>
+                </tr>
             </thead>
             <tbody>
-            {posts.map(post => <tr key={post.id}>
-                <th className="border-b border-r-gray-200">{post.id}</th>
-                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600 text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
-                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600" href={"posts/" + post.id}>{post.title}</a></td>
-                <td className="border-b border-r-gray-200">{post.body}</td>
-            </tr>)}
+                {posts.map(post => <tr key={post.id}>
+                    <th className="border-b border-r-gray-200">{post.id}</th>
+                    <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600 text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
+                    <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600" href={"posts/" + post.id}>{post.title}</a></td>
+                    <td className="border-b border-r-gray-200">{post.body}</td>
+                </tr>)}
             </tbody>
         </table>
 

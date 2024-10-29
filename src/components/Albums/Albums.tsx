@@ -68,7 +68,7 @@ export function Albums() {
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
                     <a className="text-blue-600 visited:text-purple-600"
-                       href="/dashboard">Dashboard</a>
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Albums</li>
@@ -81,13 +81,13 @@ export function Albums() {
                 <div>
                     <label className="block font-bold">Filter</label>
                     <input type="text" defaultValue={filterValue}
-                           className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+                        className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
                 </div>
 
                 <div>
                     <label className="block font-bold">Filter type</label>
                     <select onChange={onFilterTypeChange} value={filterType}
-                            className="border-2 border-gray-200 rounded-lg p-2">
+                        className="border-2 border-gray-200 rounded-lg p-2">
                         <option value="userId">User ID</option>
                         <option value="title">Title</option>
                     </select>
@@ -99,7 +99,7 @@ export function Albums() {
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
-                               className="text-blue-600 visited:text-purple-600">
+                                className="text-blue-600 visited:text-purple-600">
                                 {album.title}
                             </a>
                         </div>
@@ -108,9 +108,9 @@ export function Albums() {
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
-                                  className="text-blue-600 visited:text-purple-600">
-                            User {album.userId}
-                        </a>
+                                className="text-blue-600 visited:text-purple-600">
+                                User {album.userId}
+                            </a>
                         </div>
                     </div>))}
             </div>

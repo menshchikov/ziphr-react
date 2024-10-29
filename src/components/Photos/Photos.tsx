@@ -24,7 +24,7 @@ export function Photos() {
         }, 500)
     ).current;
 
-    function onPageChange(num: number) {
+    function pageChange(num: number) {
         searchParams.set('page', num.toString(10));
         setSearchParams(searchParams);
     }
@@ -54,7 +54,7 @@ export function Photos() {
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
                     <a className="text-blue-600 visited:text-purple-600"
-                       href="/dashboard">Dashboard</a>
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Photos</li>
@@ -66,13 +66,13 @@ export function Photos() {
                 <div>
                     <label className="block font-bold">Filter</label>
                     <input type="text" defaultValue={filterValue}
-                           className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
+                        className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
                 </div>
 
                 <div>
                     <label className="block font-bold">Filter type</label>
                     <select onChange={onFilterTypeChange} value={filterType}
-                            className="border-2 border-gray-200 rounded-lg p-2">
+                        className="border-2 border-gray-200 rounded-lg p-2">
                         <option value="albumId">Album ID</option>
                         <option value="title">Title</option>
                     </select>
@@ -86,7 +86,7 @@ export function Photos() {
                     <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <a href={'/photos/' + photo.id} className="text-blue-600 visited:text-purple-600">
                             <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                                 className="bg-gray-200 object-cover w-full h-[200px]"></img>
+                                className="bg-gray-200 object-cover w-full h-[200px]"></img>
                             <div className="p-1 line-clamp-1">{photo.title}</div>
                         </a>
                         <a href={'/albums/' + photo.albumId} className="text-blue-600 visited:text-purple-600 p-1">View
@@ -94,7 +94,7 @@ export function Photos() {
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={onPageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={pageChange}/>
         </div>
     );
 }

@@ -10,7 +10,7 @@ export function usePhotos(albumId: string, title: string, page: number, pageSize
 
     let photos = data || [];
     if (title) {
-            photos = filterArrayByTitle(photos, title);
+        photos = filterArrayByTitle(photos, title);
     }
     const pages = Math.ceil(photos.length / pageSize);
     photos = paginateArray(photos, page, pageSize)

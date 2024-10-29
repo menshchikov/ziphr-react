@@ -21,12 +21,12 @@ export const Post = () => {
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
                 <a className="text-blue-600 visited:text-purple-600"
-                   href="/dashboard">Dashboard</a>
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="breadcrumb-item">
                 <a className="text-blue-600 visited:text-purple-600"
-                   href="/posts">Posts</a>
+                    href="/posts">Posts</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700">{id}</li>
