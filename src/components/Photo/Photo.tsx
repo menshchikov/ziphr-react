@@ -27,20 +27,20 @@ export const Photo = () => {
     return <div className="p-2">
         <ol className="flex flex-row gap-2">
             <li className="">
-                <a className="text-blue-600 visited:text-purple-600"
+                <a className="link"
                     href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="" aria-current="page">
                 <a
-                    className="text-blue-600 visited:text-purple-600"
+                    className="link"
                     href="/photos">Photos</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700" aria-current="page">{id}</li>
         </ol>
         <h1>{query.data.title}</h1>
-        <a className="text-blue-600 visited:text-purple-600" href={"/albums/" + query.data.albumId}>View Album</a>
+        <a className="link" href={"/albums/" + query.data.albumId}>View Album</a>
         {!showImg && (<div><Loader/></div>)}
         <img src={query.data.url}
             alt={query.data.url.split('/').pop()}

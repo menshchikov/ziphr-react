@@ -17,7 +17,7 @@ export function UserPosts(props: { userId: string | undefined }) {
         {posts?.map(post => {
             return <div className="py-2">
                 <a href={'/posts/' + post.id}
-                    className="line-clamp-1 text-blue-600 visited:text-purple-600">{post.title}</a>
+                    className="line-clamp-1 link">{post.title}</a>
                 <div className="line-clamp-1">{post.body}</div>
             </div>
         })}

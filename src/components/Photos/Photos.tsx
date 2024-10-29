@@ -53,7 +53,7 @@ export function Photos() {
         <div className="p-2">
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
-                    <a className="text-blue-600 visited:text-purple-600"
+                    <a className="link"
                         href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
@@ -84,12 +84,12 @@ export function Photos() {
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {photos?.map((photo) => (
                     <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
-                        <a href={'/photos/' + photo.id} className="text-blue-600 visited:text-purple-600">
+                        <a href={'/photos/' + photo.id} className="link">
                             <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
                                 className="bg-gray-200 object-cover w-full h-[200px]"></img>
                             <div className="p-1 line-clamp-1">{photo.title}</div>
                         </a>
-                        <a href={'/albums/' + photo.albumId} className="text-blue-600 visited:text-purple-600 p-1">View
+                        <a href={'/albums/' + photo.albumId} className="link p-1">View
                             album</a>
                     </div>))}
             </div>

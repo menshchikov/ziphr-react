@@ -20,12 +20,12 @@ export const Post = () => {
     return (<div className="p-2">
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
-                <a className="text-blue-600 visited:text-purple-600"
+                <a className="link"
                     href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="breadcrumb-item">
-                <a className="text-blue-600 visited:text-purple-600"
+                <a className="link"
                     href="/posts">Posts</a>
             </li>
             <li>/</li>

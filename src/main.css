@@ -27,6 +27,10 @@ code {
   animation: rotation 1s linear infinite;
 }
 
+.link {
+  @apply text-blue-600 visited:text-purple-600
+}
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);

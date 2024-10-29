@@ -62,13 +62,13 @@ export const Album = () => {
     return <div className="p-2">
         <ol className="flex flex-row gap-2">
             <li className="">
-                <a className="text-blue-600 visited:text-purple-600"
+                <a className="link"
                     href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="" aria-current="page">
                 <a
-                    className="text-blue-600 visited:text-purple-600"
+                    className="link"
                     href="/albums">Albums</a>
             </li>
             <li>/</li>
@@ -86,7 +86,7 @@ export const Album = () => {
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {photosQuery.photos.map((photo) => (
                 <a key={photo.id}
-                    className="border border-gray-200 rounded-lg overflow-hidden text-blue-600 visited:text-purple-600"
+                    className="border border-gray-200 rounded-lg overflow-hidden link"
                     href={'/photos/' + photo.id}
                 >
                     <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}

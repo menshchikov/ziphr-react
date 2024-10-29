@@ -53,7 +53,7 @@ export function Dashboard() {
                         {postsQuery.data?.slice(0, 10).map(post =>
                             <div key={post.id} className={"mt-3"}>
                                 <a href={"/posts/" + post.id}
-                                    className={"line-clamp-2 text-blue-600 visited:text-purple-600"}>{post.title}</a>
+                                    className={"line-clamp-2 link"}>{post.title}</a>
                                 <div className="line-clamp-2 overflow-hidden">{post.body}</div>
                             </div>
                         )}

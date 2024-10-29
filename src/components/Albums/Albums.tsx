@@ -67,7 +67,7 @@ export function Albums() {
         <div className="p-2">
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
-                    <a className="text-blue-600 visited:text-purple-600"
+                    <a className="link"
                         href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
@@ -99,7 +99,7 @@ export function Albums() {
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
-                                className="text-blue-600 visited:text-purple-600">
+                                className="link">
                                 {album.title}
                             </a>
                         </div>
@@ -108,7 +108,7 @@ export function Albums() {
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
-                                className="text-blue-600 visited:text-purple-600">
+                                className="link">
                                 User {album.userId}
                             </a>
                         </div>
