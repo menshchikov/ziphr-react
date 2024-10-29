@@ -8,3 +8,10 @@ export function filterArrayByTitle<T extends {title: string}>(items: T[], filter
     const filterLowerCase = filter.toLowerCase();
     return items.filter(item => item.title.toLowerCase().indexOf(filterLowerCase) > -1);
 }
+
+export function getCommonSearchParams(searchParams: URLSearchParams, defaultFilterType: string = '') {
+    const filterType = searchParams.get('filterType') || defaultFilterType;
+    const filterValue = searchParams.get('filter') || '';
+    const page = Number(searchParams.get('page')) || 1;
+    return {filterType, filterValue, page};
+}

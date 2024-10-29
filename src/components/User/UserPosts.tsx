@@ -1,12 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
-import {getPosts} from "../../services/post-api";
 import {Loader} from "../Loader";
+import {usePosts} from "../../hooks/usePosts.ts";
 
 export function UserPosts(props: { userId: string | undefined }) {
-    const {isPending, isError, data: posts, error} = useQuery({
-        queryKey: ['posts', props.userId],
-        queryFn: () => getPosts(props.userId),
-    });
+    const {isPending, isError, posts, error} = usePosts(props.userId);
     if (isPending) {
         return <Loader/>
     }

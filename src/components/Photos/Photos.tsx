@@ -3,17 +3,21 @@ import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {usePhotos} from "./usePhotos.ts";
+import {usePhotos} from "../../hooks/usePhotos.ts";
+import {getCommonSearchParams} from "../../services/utils.ts";
+import {FilterBar} from "../FilterBar.tsx";
 
 const PAGE_SIZE = 5;
+const PHOTOS_FILTER_TYPES = [
+    {value: 'albumId', title: 'Album ID'},
+    {value: 'title', title: 'Title'}
+]
 
 export function Photos() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const filterValue = searchParams.get("filter") || '';
-    const filterType = searchParams.get("filterType") || 'albumId';
-    const page = Number(searchParams.get("page")) || 1;
+    const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'albumId');
     const albumId = filterType === 'albumId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
     const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
@@ -60,24 +64,13 @@ export function Photos() {
                 <li className="breadcrumb-item active" aria-current="page">Photos</li>
             </ol>
 
-
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-
-                <div>
-                    <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={filterValue}
-                        className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
-                </div>
-
-                <div>
-                    <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={filterType}
-                        className="border-2 border-gray-200 rounded-lg p-2">
-                        <option value="albumId">Album ID</option>
-                        <option value="title">Title</option>
-                    </select>
-                </div>
-            </div>
+            <FilterBar
+                defaultFilter={filterValue}
+                onFilterChange={onFilterChange}
+                onFilterTypeChange={onFilterTypeChange}
+                defaultFilterType={filterType}
+                filterTypes={PHOTOS_FILTER_TYPES}
+            />
 
             <h1 className="text-4xl font-bold my-4">Photos</h1>
 

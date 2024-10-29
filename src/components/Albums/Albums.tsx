@@ -4,19 +4,25 @@ import {useSearchParams} from "react-router-dom";
 import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {useAlbums} from "./useAlbums.ts";
+import {useAlbums} from "../../hooks/useAlbums.ts";
+import {FilterBar} from "../FilterBar.tsx";
+import {getCommonSearchParams} from "../../services/utils.ts";
 
 const PAGE_SIZE = 5;
+const ALBUMS_FILTER_TYPES = [
+    {value: 'userId', title: 'User ID'},
+    {value: 'title', title: 'Title'}
+]
 
 export function Albums() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const filterValue = searchParams.get('filter') || '';
-    const filterType = searchParams.get('filterType') || 'userId';
-    const page = Number(searchParams.get('page')) || 1;
+    const {filterValue, filterType, page} = getCommonSearchParams(searchParams, 'userId');
+    const userId = filterType === 'userId' ? filterValue : '';
+    const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, result: albums, pages} = useAlbums(filterType, filterValue, page, PAGE_SIZE);
+    const {isPending, isError, error, albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set('page', num.toString());
@@ -76,23 +82,13 @@ export function Albums() {
 
             <h1 className="text-4xl font-bold my-4">Albums</h1>
 
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-
-                <div>
-                    <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={filterValue}
-                        className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
-                </div>
-
-                <div>
-                    <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={filterType}
-                        className="border-2 border-gray-200 rounded-lg p-2">
-                        <option value="userId">User ID</option>
-                        <option value="title">Title</option>
-                    </select>
-                </div>
-            </div>
+            <FilterBar 
+                defaultFilter={filterValue}
+                onFilterChange={onFilterChange} 
+                onFilterTypeChange={onFilterTypeChange}
+                defaultFilterType={filterType} 
+                filterTypes={ALBUMS_FILTER_TYPES}
+            />
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 mt-3">
                 {albums.map((album) => (

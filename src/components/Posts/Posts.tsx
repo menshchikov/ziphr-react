@@ -2,20 +2,24 @@ import {ChangeEvent, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {usePosts} from "./usePosts.ts";
+import {usePosts} from "../../hooks/usePosts.ts";
 import {PostsTable} from "./PostsTable.tsx";
-import {FilterBar} from "./FilterBar.tsx";
+import {FilterBar} from "../FilterBar.tsx";
+import {getCommonSearchParams} from "../../services/utils.ts";
 
 const PAGE_SIZE = 5;
+const POSTS_FILTER_TYPES = [
+    {value: 'userId', title: 'User ID'},
+    {value: 'title', title: 'Title'}
+];
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const filterType = searchParams.get('filterType') || 'userId';
-    const filter = searchParams.get('filter') || '';
-    const page = Number(searchParams.get('page')) || 1;
-    const filterTypes = [{value: 'userId', title: 'User ID'}, {value: 'title', title: 'Title'}]
+    const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'userId');
+    const userId = filterType === 'userId' ? filterValue : '';
+    const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
+    const {isPending, isError, error, posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set('page', num.toString());
@@ -67,14 +71,14 @@ export function Posts() {
         <h1 className="text-4xl font-bold my-4">Posts</h1>
 
         <FilterBar
-            defaultFilter={filter}
+            defaultFilter={filterValue}
             onFilterChange={onFilterChange}
             onFilterTypeChange={onFilterTypeChange}
             defaultFilterType={filterType}
-            filterTypes={filterTypes}
-        ></FilterBar>
+            filterTypes={POSTS_FILTER_TYPES}
+        />
 
-        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange} ></PostsTable>
+        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange} />
 
     </div>;
 }

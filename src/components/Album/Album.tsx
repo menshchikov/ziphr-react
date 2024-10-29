@@ -5,7 +5,7 @@ import {getAlbumById} from "../../services/album-api";
 import {Paginator} from "../Paginator";
 import {debounce} from "lodash";
 import {Loader} from "../Loader.tsx";
-import {usePhotos} from "../Photos/usePhotos.ts";
+import {usePhotos} from "../../hooks/usePhotos.ts";
 
 const PAGE_SIZE = 5;
 
