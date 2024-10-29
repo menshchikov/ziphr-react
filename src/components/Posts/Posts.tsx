@@ -6,6 +6,7 @@ import {usePosts} from "../../hooks/usePosts.ts";
 import {PostsTable} from "./PostsTable.tsx";
 import {FilterBar} from "../FilterBar.tsx";
 import {getCommonSearchParams} from "../../services/utils.ts";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
 const POSTS_FILTER_TYPES = [
@@ -35,18 +36,18 @@ export function Posts() {
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
         if (value) {
-            searchParams.set("filter", value);
+            searchParams.set(FILTER_VALUE_PARAM, value);
         } else {
-            searchParams.delete("filter");
+            searchParams.delete(FILTER_VALUE_PARAM);
         }
-        searchParams.set('page', '1');
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams)
     }
 
     function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
-        searchParams.set("filterType", value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_TYPE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams)
     }
 

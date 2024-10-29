@@ -6,6 +6,7 @@ import {Loader} from "../Loader";
 import {usePhotos} from "../../hooks/usePhotos.ts";
 import {getCommonSearchParams} from "../../services/utils.ts";
 import {FilterBar} from "../FilterBar.tsx";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
 const PHOTOS_FILTER_TYPES = [
@@ -29,20 +30,20 @@ export function Photos() {
     ).current;
 
     function pageChange(num: number) {
-        searchParams.set('page', num.toString(10));
+        searchParams.set(PAGE_PARAM, num.toString(10));
         setSearchParams(searchParams);
     }
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
-        searchParams.set('filter', e.target.value);
-        searchParams.set('filterType', filterType);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_VALUE_PARAM, e.target.value);
+        searchParams.set(FILTER_TYPE_PARAM, filterType);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams);
     }
 
     function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
-        searchParams.set('filterType', e.target.value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_TYPE_PARAM, e.target.value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams);
     }
 

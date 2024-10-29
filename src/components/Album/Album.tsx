@@ -6,6 +6,7 @@ import {Paginator} from "../Paginator";
 import {debounce} from "lodash";
 import {Loader} from "../Loader.tsx";
 import {usePhotos} from "../../hooks/usePhotos.ts";
+import {FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
 
@@ -14,15 +15,18 @@ export const Album = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const page = Number(searchParams.get("page")) || 1;
-    const titleFilter = searchParams.get("filter") || ''
+    const page = Number(searchParams.get(PAGE_PARAM)) || 1;
+    const titleFilter = searchParams.get(FILTER_VALUE_PARAM) || ''
 
     const onPageChange = (page: number) => {
-        searchParams.set('page', page.toString());
+        searchParams.set(PAGE_PARAM, page.toString());
         setSearchParams(searchParams);
     }
 
-    const albumQuery = useQuery({queryKey: ['album', id], queryFn: () => getAlbumById(id || '0')});
+    const albumQuery = useQuery({
+        queryKey: ['album', id],
+        queryFn: () => getAlbumById(id || '0')
+    });
     const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
 
@@ -35,11 +39,11 @@ export const Album = () => {
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const title = e.target.value;
         if (!title) {
-            searchParams.delete('filter');
+            searchParams.delete(FILTER_VALUE_PARAM);
         } else {
-            searchParams.set('filter', title);
+            searchParams.set(FILTER_VALUE_PARAM, title);
         }
-        searchParams.set('page', '1');
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams);
     }
 

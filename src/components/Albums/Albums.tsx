@@ -7,6 +7,7 @@ import {Loader} from "../Loader";
 import {useAlbums} from "../../hooks/useAlbums.ts";
 import {FilterBar} from "../FilterBar.tsx";
 import {getCommonSearchParams} from "../../services/utils.ts";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
 const ALBUMS_FILTER_TYPES = [
@@ -25,7 +26,7 @@ export function Albums() {
     const {isPending, isError, error, albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
-        searchParams.set('page', num.toString());
+        searchParams.set(PAGE_PARAM, num.toString());
         setSearchParams(searchParams);
     }
 
@@ -50,15 +51,15 @@ export function Albums() {
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
-        searchParams.set('filter', value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_VALUE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams)
     }
 
     function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
-        searchParams.set('filterType', value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_TYPE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams)
     }
 
