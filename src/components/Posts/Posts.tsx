@@ -1,21 +1,28 @@
-import {useRef} from 'react';
-import {Paginator} from "../Paginator";
+import {ChangeEvent, useRef} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {usePosts} from "./usePosts.ts";
+import {usePosts} from "../../hooks/usePosts.ts";
+import {PostsTable} from "./PostsTable.tsx";
+import {FilterBar} from "../FilterBar.tsx";
+import {getCommonSearchParams} from "../../services/utils.ts";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
+const POSTS_FILTER_TYPES = [
+    {value: 'userId', title: 'User ID'},
+    {value: 'title', title: 'Title'}
+];
 
 export function Posts() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const filterType = searchParams.get('filterType') || 'userId';
-    const filter = searchParams.get('filter') || '';
-    const page = Number(searchParams.get('page')) || 1;
+    const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'userId');
+    const userId = filterType === 'userId' ? filterValue : '';
+    const title = filterType === 'title' ? filterValue : '';
 
-    let {isPending, isError, error, posts, pages} = usePosts(filterType, filter, page, PAGE_SIZE);
+    const {isPending, isError, error, posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
 
-    function pageChange(num: number) {
+    function onPageChange(num: number) {
         searchParams.set('page', num.toString());
         setSearchParams(searchParams);
     }
@@ -26,37 +33,37 @@ export function Posts() {
         }, 500)
     ).current;
 
-    function onFilterChange(e: any) {
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
-        if(value) {
-            searchParams.set("filter", value);
-        }else{
-            searchParams.delete("filter");
+        if (value) {
+            searchParams.set(FILTER_VALUE_PARAM, value);
+        } else {
+            searchParams.delete(FILTER_VALUE_PARAM);
         }
-        searchParams.set('page', '1');
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams)
     }
 
-    function onFilterTypeChange(e: any) {
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
-        searchParams.set("filterType", value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_TYPE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams)
     }
 
-    if(isPending) {
+    if (isPending) {
         return <Loader/>
     }
     if (isError) {
-        return <div>{'Error: '+error}</div>
+        return <div>{'Error: ' + error}</div>
     }
 
-    return (<div className="p-2">
+    return <div className="p-2">
 
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
-                <a className="text-blue-600 visited:text-purple-600"
-                   href="/dashboard">Dashboard</a>
+                <a className="link"
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700">Posts</li>
@@ -64,42 +71,15 @@ export function Posts() {
 
         <h1 className="text-4xl font-bold my-4">Posts</h1>
 
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-            <div>
-                <label htmlFor="filter" className="block font-bold">Filter</label>
-                <input id="filter" type="text" defaultValue={filter}
-                       className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
-            </div>
+        <FilterBar
+            defaultFilter={filterValue}
+            onFilterChange={onFilterChange}
+            onFilterTypeChange={onFilterTypeChange}
+            defaultFilterType={filterType}
+            filterTypes={POSTS_FILTER_TYPES}
+        />
 
-            <div>
-                <label htmlFor="filterType" className="block font-bold">Filter type</label>
-                <select id="filterType" onChange={onFilterTypeChange} value={filterType}
-                        className="border-2 border-gray-200 rounded-lg p-2">
-                    <option value="userId">User ID</option>
-                    <option value="title">Title</option>
-                </select>
-            </div>
-        </div>
+        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange} />
 
-        <table cellSpacing={5} cellPadding={5} className="table mt-3">
-            <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">User</th>
-                <th scope="col">Title</th>
-                <th scope="col">Content</th>
-            </tr>
-            </thead>
-            <tbody>
-            {posts.map(post => <tr key={post.id}>
-                <th className="border-b border-r-gray-200">{post.id}</th>
-                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600 text-nowrap" href={"/users/" + post.userId}>User {post.userId}</a></td>
-                <td className="border-b border-r-gray-200"><a className="text-blue-600 visited:text-purple-600" href={"posts/" + post.id}>{post.title}</a></td>
-                <td className="border-b border-r-gray-200">{post.body}</td>
-            </tr>)}
-            </tbody>
-        </table>
-
-        <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}></Paginator>
-    </div>);
+    </div>;
 }

@@ -1,45 +1,65 @@
-import {useRef} from 'react';
+import {ChangeEvent, useCallback, useMemo} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {useAlbums} from "./useAlbums.ts";
+import {useAlbums} from "../../hooks/useAlbums.ts";
+import {FilterBar} from "../FilterBar.tsx";
+import {getCommonSearchParams} from "../../services/utils.ts";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
+const ALBUMS_FILTER_TYPES = [
+    {value: 'userId', title: 'User ID'},
+    {value: 'title', title: 'Title'}
+]
 
 export function Albums() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const filterValue = searchParams.get('filter') || '';
-    const filterType = searchParams.get('filterType') || 'userId';
-    const page = Number(searchParams.get('page')) || 1;
+    const {filterValue, filterType, page} = getCommonSearchParams(searchParams, 'userId');
+    const userId = filterType === 'userId' ? filterValue : '';
+    const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, result: albums, pages} = useAlbums(filterType, filterValue, page, PAGE_SIZE);
+    const {isPending, isError, error, albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
 
-    function pageChange(num: number) {
-        searchParams.set('page', num.toString());
+    function onPageChange(num: number) {
+        searchParams.set(PAGE_PARAM, num.toString());
         setSearchParams(searchParams);
     }
 
-    const setSearchParamsDebounced = useRef(
-        debounce((searchParams) => {
-            setSearchParams(searchParams);
-        }, 500)
-    ).current;
+    // const setSearchParamsDebounced = useCallback(
+    //     debounce((searchParams) => {
+    //         setSearchParams(searchParams);
+    //     }, 500),
+    //     [setSearchParams]
+    // );
+    // React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead
+    // solution with useMemo works fine, but looks wierd
 
-    function onFilterChange(e: any) {
+    const setSearchParamsDebouncedMemorized = useMemo(() =>
+        debounce((params: URLSearchParams) => {
+            setSearchParams(params);
+        }, 500), [setSearchParams]
+    );
+
+    const setSearchParamsDebounced = useCallback((p: URLSearchParams) =>
+        setSearchParamsDebouncedMemorized(p), [setSearchParamsDebouncedMemorized]
+    );
+
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
-        searchParams.set('filter', value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_VALUE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams)
     }
 
-    function onFilterTypeChange(e: any) {
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
         const value = e.target.value;
-        searchParams.set('filterType', value);
-        searchParams.set('page', '1');
+        searchParams.set(FILTER_TYPE_PARAM, value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams)
     }
 
@@ -54,8 +74,8 @@ export function Albums() {
         <div className="p-2">
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
-                    <a className="text-blue-600 visited:text-purple-600"
-                       href="/dashboard">Dashboard</a>
+                    <a className="link"
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Albums</li>
@@ -63,30 +83,20 @@ export function Albums() {
 
             <h1 className="text-4xl font-bold my-4">Albums</h1>
 
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-
-                <div>
-                    <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={filterValue}
-                           className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
-                </div>
-
-                <div>
-                    <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={filterType}
-                            className="border-2 border-gray-200 rounded-lg p-2">
-                        <option value="userId">User ID</option>
-                        <option value="title">Title</option>
-                    </select>
-                </div>
-            </div>
+            <FilterBar 
+                defaultFilter={filterValue}
+                onFilterChange={onFilterChange} 
+                onFilterTypeChange={onFilterTypeChange}
+                defaultFilterType={filterType} 
+                filterTypes={ALBUMS_FILTER_TYPES}
+            />
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 mt-3">
                 {albums.map((album) => (
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
-                               className="text-blue-600 visited:text-purple-600">
+                                className="link">
                                 {album.title}
                             </a>
                         </div>
@@ -95,14 +105,14 @@ export function Albums() {
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
-                                  className="text-blue-600 visited:text-purple-600">
-                            User {album.userId}
-                        </a>
+                                className="link">
+                                User {album.userId}
+                            </a>
                         </div>
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={onPageChange}/>
 
         </div>
     );

@@ -3,10 +3,10 @@ import classNames from "classnames";
 
 export interface MenuItemProps {
     path: string;
-    title:string;
+    title: string;
 }
 
-export function MenuItem(props:MenuItemProps){
+export function MenuItem(props: MenuItemProps){
     const location = useLocation();
     const isActive = location.pathname.indexOf(props.path) > -1;
 

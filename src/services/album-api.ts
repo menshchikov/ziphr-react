@@ -1,16 +1,17 @@
 import {Album} from "../model/album";
+import {API_URL} from "./consts.ts";
 
 export async function getAlbumById(id: string): Promise<Album> {
-    const url = 'https://jsonplaceholder.typicode.com/albums/';
-    let res = await fetch(url + id);
+    const url = API_URL + '/albums/';
+    const res = await fetch(url + id);
     return await res.json();
 }
 
 export async function getAlbums(userId?: string): Promise<Album[]> {
-    let url = 'https://jsonplaceholder.typicode.com/albums';
+    let url = API_URL + '/albums';
     if (userId) {
         url += '?userId=' + userId;
     }
-    let res = await fetch(url);
+    const res = await fetch(url);
     return await res.json();
 }

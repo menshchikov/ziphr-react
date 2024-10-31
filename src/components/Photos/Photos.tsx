@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import {Paginator} from "../Paginator";
 import {useSearchParams} from "react-router-dom";
 import {debounce} from "lodash";
 import {Loader} from "../Loader";
-import {usePhotos} from "./usePhotos.ts";
+import {usePhotos} from "../../hooks/usePhotos.ts";
+import {getCommonSearchParams} from "../../services/utils.ts";
+import {FilterBar} from "../FilterBar.tsx";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
 
 const PAGE_SIZE = 5;
+const PHOTOS_FILTER_TYPES = [
+    {value: 'albumId', title: 'Album ID'},
+    {value: 'title', title: 'Title'}
+]
 
 export function Photos() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const filterValue = searchParams.get("filter") || '';
-    const filterType = searchParams.get("filterType") || 'albumId';
-    const page = Number(searchParams.get("page")) || 1;
+    const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'albumId');
     const albumId = filterType === 'albumId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
     const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
@@ -25,20 +30,20 @@ export function Photos() {
     ).current;
 
     function pageChange(num: number) {
-        searchParams.set('page', num.toString(10));
+        searchParams.set(PAGE_PARAM, num.toString(10));
         setSearchParams(searchParams);
     }
 
-    function onFilterChange(e: any) {
-        searchParams.set('filter', e.target.value);
-        searchParams.set('filterType', filterType);
-        searchParams.set('page', '1');
+    function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
+        searchParams.set(FILTER_VALUE_PARAM, e.target.value);
+        searchParams.set(FILTER_TYPE_PARAM, filterType);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParamsDebounced(searchParams);
     }
 
-    function onFilterTypeChange(e: any) {
-        searchParams.set('filterType', e.target.value);
-        searchParams.set('page', '1');
+    function onFilterTypeChange(e: ChangeEvent<HTMLSelectElement>) {
+        searchParams.set(FILTER_TYPE_PARAM, e.target.value);
+        searchParams.set(PAGE_PARAM, '1');
         setSearchParams(searchParams);
     }
 
@@ -53,48 +58,37 @@ export function Photos() {
         <div className="p-2">
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
-                    <a className="text-blue-600 visited:text-purple-600"
-                       href="/dashboard">Dashboard</a>
+                    <a className="link"
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Photos</li>
             </ol>
 
-
-            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-
-                <div>
-                    <label className="block font-bold">Filter</label>
-                    <input type="text" defaultValue={filterValue}
-                           className="w-full border-2 bordr-gray-200 rounded-lg p-2" onChange={onFilterChange}/>
-                </div>
-
-                <div>
-                    <label className="block font-bold">Filter type</label>
-                    <select onChange={onFilterTypeChange} value={filterType}
-                            className="border-2 border-gray-200 rounded-lg p-2">
-                        <option value="albumId">Album ID</option>
-                        <option value="title">Title</option>
-                    </select>
-                </div>
-            </div>
+            <FilterBar
+                defaultFilter={filterValue}
+                onFilterChange={onFilterChange}
+                onFilterTypeChange={onFilterTypeChange}
+                defaultFilterType={filterType}
+                filterTypes={PHOTOS_FILTER_TYPES}
+            />
 
             <h1 className="text-4xl font-bold my-4">Photos</h1>
 
             <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {photos?.map((photo) => (
                     <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
-                        <a href={'/photos/' + photo.id} className="text-blue-600 visited:text-purple-600">
+                        <a href={'/photos/' + photo.id} className="link">
                             <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                                 className="bg-gray-200 object-cover w-full h-[200px]"></img>
+                                className="bg-gray-200 object-cover w-full h-[200px]"></img>
                             <div className="p-1 line-clamp-1">{photo.title}</div>
                         </a>
-                        <a href={'/albums/' + photo.albumId} className="text-blue-600 visited:text-purple-600 p-1">View
+                        <a href={'/albums/' + photo.albumId} className="link p-1">View
                             album</a>
                     </div>))}
             </div>
 
-            <Paginator currentPageNum={page} totalPagesCount={pages} pageChanged={pageChange}/>
+            <Paginator currentPageNum={page} totalPagesCount={pages} onPageChange={pageChange}/>
         </div>
     );
 }

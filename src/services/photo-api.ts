@@ -1,12 +1,13 @@
 import {Photo} from "../model/photo";
+import {API_URL} from "./consts.ts";
 
 export function getPhotoById(id: string): Promise<Photo> {
-    const url = 'https://jsonplaceholder.typicode.com/photos/';
+    const url = API_URL + '/photos/';
     return fetch(url + id).then(res => res.json())
 }
 
-export function getPhotos(albumId?:string): Promise<Photo[]> {
-    let url = 'https://jsonplaceholder.typicode.com/photos';
+export function getPhotos(albumId?: string): Promise<Photo[]> {
+    let url = API_URL + '/photos';
     if (albumId) {
         url += '?albumId=' + albumId;
     }

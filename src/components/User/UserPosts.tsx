@@ -1,12 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
-import {getPosts} from "../../services/post-api";
 import {Loader} from "../Loader";
+import {usePosts} from "../../hooks/usePosts.ts";
 
 export function UserPosts(props: { userId: string | undefined }) {
-    const {isPending, isError, data: posts, error} = useQuery({
-        queryKey: ['posts', props.userId],
-        queryFn: () => getPosts(props.userId),
-    });
+    const {isPending, isError, posts, error} = usePosts(props.userId);
     if (isPending) {
         return <Loader/>
     }
@@ -17,7 +13,7 @@ export function UserPosts(props: { userId: string | undefined }) {
         {posts?.map(post => {
             return <div className="py-2">
                 <a href={'/posts/' + post.id}
-                   className="line-clamp-1 text-blue-600 visited:text-purple-600">{post.title}</a>
+                    className="line-clamp-1 link">{post.title}</a>
                 <div className="line-clamp-1">{post.body}</div>
             </div>
         })}

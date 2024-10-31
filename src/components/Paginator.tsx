@@ -3,91 +3,55 @@ import classNames from "classnames";
 export interface PaginatorProps {
     currentPageNum: number,
     totalPagesCount: number,
-    pageChanged: (num: number) => void,
+    onPageChange: (num: number) => void,
 }
 
 export const Paginator = (props: PaginatorProps) => {
-    const pagesArray = [];
-    const left = props.currentPageNum - 1;
-    const right = props.currentPageNum + 1;
-    let isLeftSpaceInsert = false;
-    let isRightSpaceInsert = false;
-    for (let i = 1; i <= props.totalPagesCount; i++) {
+    const {currentPageNum, totalPagesCount, onPageChange} = props;
 
-        if (i < left && i !== 1) {
-            if (!isLeftSpaceInsert) {
-                pagesArray.push(-1);
-                isLeftSpaceInsert = true;
-            }
-        } else if (i > right && i !== props.totalPagesCount) {
-            if (!isRightSpaceInsert) {
-                pagesArray.push(-1);
-                isRightSpaceInsert = true;
-            }
-        } else {
-            pagesArray.push(i);
+    let buttons: number[];
+    if (totalPagesCount < 6) {
+        buttons = Array.from({length: totalPagesCount}, (_, index) => index + 1)
+    } else {
+        switch (currentPageNum) {
+        case 1:
+        case 2:
+        case 3: {
+            buttons = [1, 2, 3, 4, -1, totalPagesCount];
+            break
         }
-    }
-
-    function setPage(num: number) {
-        if (num === -1) {
-            return;
+        case totalPagesCount:
+        case totalPagesCount - 1:
+        case totalPagesCount - 2: {
+            buttons = [1, -1, totalPagesCount - 3, totalPagesCount - 2, totalPagesCount - 1, totalPagesCount];
+            break
         }
-        props.pageChanged(num);
-    }
-
-    function nextPage() {
-        if (props.currentPageNum === props.totalPagesCount) {
-            return;
+        default: {
+            buttons = [1, -1, currentPageNum - 1, currentPageNum, currentPageNum + 1, -1, totalPagesCount];
+            break
         }
-        props.pageChanged(props.currentPageNum + 1);
-    }
-
-    function prevPage() {
-        if (props.currentPageNum === 1) {
-            return;
         }
-        props.pageChanged(props.currentPageNum - 1);
     }
 
     return (
         <nav>
             <ul className="flex flex-row justify-center mt-3">
-                <li className={classNames([
-                    "cursor-pointer px-4 py-2",
-                    "border border-solid hover:bg-gray-200",
-                    {'disabled': props.currentPageNum === 0},
-                ])}
-                    onClick={prevPage}
-                >
-                    <a className="page-link">&lt;</a>
-                </li>
-
-                {pagesArray.map((num, index) => {
-                        if (num === -1) {
-                            return <li key={index} className="px-4 py-2">...</li>;
-                        }
-                        return <li key={index} className={classNames([
-                            "cursor-pointer px-4 py-2",
-                            "border border-solid hover:bg-gray-200",
-                            {"text-white bg-blue-700": props.currentPageNum === num},
-                        ])}
-                                   onClick={() => setPage(num)}
+                {buttons.map((num, index) => {
+                    if (num === -1) {
+                        return <li key={index} className="px-4 py-2">...</li>;
+                    } else {
+                        return <li key={index}
+                            className={classNames([
+                                "cursor-pointer px-4 py-2",
+                                "border border-solid hover:bg-gray-200",
+                                {"text-white bg-blue-700": currentPageNum === num},
+                            ])}
+                            onClick={() => onPageChange(num)}
                         >
                             {num}
                         </li>
                     }
-                )}
-
-                <li className={classNames([
-                    "cursor-pointer px-4 py-2",
-                    "border border-solid hover:bg-gray-200",
-                    {'disabled': props.currentPageNum === props.totalPagesCount - 1},
-                ])}
-                    onClick={nextPage}
-                >
-                    <a className="page-link">&gt;</a>
-                </li>
+                })}
             </ul>
         </nav>
     )
