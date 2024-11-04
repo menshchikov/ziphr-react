@@ -2,7 +2,7 @@ import {useParams} from 'react-router-dom';
 import {UserAlbums} from './UserAlbums';
 import {UserPosts} from './UserPosts';
 import {Loader} from '../Loader';
-import {useUser} from "../../hooks/useUser.ts";
+import {useUser} from '../../hooks/useUser.ts';
 
 export const User = () => {
     const {id} = useParams();

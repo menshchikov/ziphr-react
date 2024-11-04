@@ -1,7 +1,7 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
 import {Loader} from '../Loader';
-import {usePhoto} from "../../hooks/usePhoto.ts";
+import {usePhoto} from '../../hooks/usePhoto.ts';
 
 export const Photo = () => {
     const {id} = useParams();

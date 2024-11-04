@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import {Loader} from '../Loader';
-import {usePost} from "../../hooks/usePost.ts";
+import {usePost} from '../../hooks/usePost.ts';
 
 export const Post = () => {
     const {id} = useParams();

@@ -5,7 +5,7 @@ import {debounce} from 'lodash';
 import {Loader} from '../Loader.tsx';
 import {usePhotos} from '../../hooks/usePhotos.ts';
 import {FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
-import {useAlbum} from "../../hooks/useAlbum.ts";
+import {useAlbum} from '../../hooks/useAlbum.ts';
 
 const PAGE_SIZE = 5;
 

@@ -1,5 +1,5 @@
-import {useQuery} from "@tanstack/react-query";
-import {paginateArray} from "../services/utils.ts";
+import {useQuery} from '@tanstack/react-query';
+import {paginateArray} from '../services/utils.ts';
 
 export const useFetchData = <T extends { title: string }>(
     queryKey: string[],

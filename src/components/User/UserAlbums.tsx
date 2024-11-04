@@ -12,8 +12,8 @@ export function UserAlbums(props: { userId: string | undefined }) {
     return <div className="p-2">
         {albums?.map(album =>
             <a key={album.id}
-               href={'/albums/' + album.id}
-               className="link block py-2">
+                href={'/albums/' + album.id}
+                className="link block py-2">
                 {album.title}
             </a>)}
     </div>;
