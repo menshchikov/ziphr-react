@@ -2,7 +2,6 @@ import {Post} from '../model/post';
 import {API_URL} from './consts.ts';
 
 export async function getPostById(id: string): Promise<Post> {
-
     const url = API_URL + '/posts/';
     const res = await fetch(url + id);
     return await res.json();
