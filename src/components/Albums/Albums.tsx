@@ -23,7 +23,7 @@ export function Albums() {
     const userId = filterType === 'userId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set(PAGE_PARAM, num.toString());

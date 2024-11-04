@@ -52,7 +52,7 @@ export const Album = () => {
         </div>
     }
 
-    if (!albumQuery.data || !photosQuery.photos) {
+    if (!albumQuery.data || !photosQuery.items) {
         return <div className="p-2">
             <h1>Photo not found</h1>
         </div>
@@ -83,7 +83,7 @@ export const Album = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {photosQuery.photos.map((photo) => (
+            {photosQuery.items.map((photo) => (
                 <a key={photo.id}
                     className="border border-gray-200 rounded-lg overflow-hidden link"
                     href={'/photos/' + photo.id}

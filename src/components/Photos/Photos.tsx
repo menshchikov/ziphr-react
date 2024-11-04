@@ -21,7 +21,7 @@ export function Photos() {
     const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'albumId');
     const albumId = filterType === 'albumId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
-    const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
 
     const setSearchParamsDebounced = useMemo(() =>
         debounce((searchParams) => {

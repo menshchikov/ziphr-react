@@ -20,7 +20,7 @@ export function Posts() {
     const userId = filterType === 'userId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set('page', num.toString());

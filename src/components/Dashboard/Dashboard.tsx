@@ -21,15 +21,15 @@ export function Dashboard() {
                         ? <Loader/>
                         : <div className="grid grid-cols-1 xl:grid-cols-3 p-2">
                             <div>
-                                <span className="counter">{postsQuery.posts?.length}</span>
+                                <span className="counter">{postsQuery.items?.length}</span>
                                 Posts
                             </div>
                             <div>
-                                <span className="counter">{albumsQuery.albums?.length}</span>
+                                <span className="counter">{albumsQuery.items?.length}</span>
                                 Albums
                             </div>
                             <div>
-                                <span className="counter">{photosQuery.photos?.length}</span>
+                                <span className="counter">{photosQuery.items?.length}</span>
                                 Photos
                             </div>
                         </div>}
@@ -39,7 +39,7 @@ export function Dashboard() {
                     <div className="font-bold p-2 bg-gray-200">Latest Posts</div>
                     <div className="p-2">
                         {postsQuery.isPending && (<Loader/>)}
-                        {postsQuery.posts?.slice(0, 10).map(post =>
+                        {postsQuery.items?.slice(0, 10).map(post =>
                             <div key={post.id} className={'mt-3'}>
                                 <a href={'/posts/' + post.id}
                                     className={'line-clamp-2 link'}>{post.title}</a>
@@ -53,7 +53,7 @@ export function Dashboard() {
                     <div className="font-bold p-2 bg-gray-200">Recent Photos</div>
                     {photosQuery.isPending && (<Loader/>)}
                     <div className="grid grid-cols-3 gap-2 p-2">
-                        {photosQuery.photos?.slice(0, 20).map(photo =>
+                        {photosQuery.items?.slice(0, 20).map(photo =>
                             <a href={'/photos/' + photo.id}
                                 key={photo.id}
                                 className="border border-gray-200 rounded-lg overflow-hidden"

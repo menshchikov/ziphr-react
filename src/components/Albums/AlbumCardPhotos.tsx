@@ -2,7 +2,7 @@ import {Loader} from '../Loader';
 import {usePhotos} from '../../hooks/usePhotos.ts';
 
 export function AlbumCardPhotos(props: { albumId: number }) {
-    const {isPending, isError, photos, error} = usePhotos(props.albumId.toString(), '', 1, 4);
+    const {isPending, isError, items: photos, error} = usePhotos(props.albumId.toString(), '', 1, 4);
 
     if (isPending) {
         return <Loader/>
