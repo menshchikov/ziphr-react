@@ -1,8 +1,8 @@
-import {Loader} from "../Loader";
-import {useAlbums} from "../../hooks/useAlbums.ts";
+import {Loader} from '../Loader';
+import {useAlbums} from '../../hooks/useAlbums.ts';
 
-export function UserAlbums(props: { userId: string | undefined }) {
-    const {isPending, isError, albums, error} = useAlbums(props.userId);
+export const UserAlbums = (props: { userId: string | undefined }) => {
+    const {isPending, isError, items: albums, error} = useAlbums(props.userId);
     if (isPending) {
         return <Loader/>
     }
@@ -10,11 +10,11 @@ export function UserAlbums(props: { userId: string | undefined }) {
         return <div>{'Error: ' + error}</div>
     }
     return <div className="p-2">
-        {albums?.map(album => {
-            return <a href={'/albums/' + album.id}
+        {albums?.map(album =>
+            <a key={album.id}
+                href={'/albums/' + album.id}
                 className="link block py-2">
                 {album.title}
-            </a>
-        })}
+            </a>)}
     </div>;
 }

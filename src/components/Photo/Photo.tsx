@@ -1,14 +1,13 @@
 import React from 'react';
-import { useParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import {getPhotoById} from "../../services/photo-api";
-import {Loader} from "../Loader";
+import {useParams} from 'react-router-dom';
+import {Loader} from '../Loader';
+import {usePhoto} from '../../hooks/usePhoto.ts';
 
 export const Photo = () => {
     const {id} = useParams();
     const [showImg, setShowImg] = React.useState(false);
 
-    const query = useQuery({queryKey: ['photo', id], queryFn: () => getPhotoById(id || '0')});
+    const query = usePhoto(id);
 
     if(query.isPending){
         return <Loader/>
@@ -40,7 +39,7 @@ export const Photo = () => {
             <li className="font-bold text-blue-700" aria-current="page">{id}</li>
         </ol>
         <h1>{query.data.title}</h1>
-        <a className="link" href={"/albums/" + query.data.albumId}>View Album</a>
+        <a className="link" href={'/albums/' + query.data.albumId}>View Album</a>
         {!showImg && (<div><Loader/></div>)}
         <img src={query.data.url}
             alt={query.data.url.split('/').pop()}

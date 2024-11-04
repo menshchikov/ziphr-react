@@ -30,6 +30,7 @@ export default tseslint.config(
             '@stylistic/js/key-spacing': ["error", { "afterColon": true }],
             '@stylistic/js/indent':["warn", 4],
             '@stylistic/ts/type-annotation-spacing': ["error", { "after": true }],
+            '@stylistic/js/quotes': ["error", "single"],
         },
     },
 )

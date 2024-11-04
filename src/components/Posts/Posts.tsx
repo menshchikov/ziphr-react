@@ -1,12 +1,12 @@
-import {ChangeEvent, useRef} from 'react';
-import {useSearchParams} from "react-router-dom";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {usePosts} from "../../hooks/usePosts.ts";
-import {PostsTable} from "./PostsTable.tsx";
-import {FilterBar} from "../FilterBar.tsx";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {ChangeEvent, useMemo} from 'react';
+import {useSearchParams} from 'react-router-dom';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {usePosts} from '../../hooks/usePosts.ts';
+import {PostsTable} from './PostsTable.tsx';
+import {FilterBar} from '../FilterBar.tsx';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const POSTS_FILTER_TYPES = [
@@ -14,24 +14,24 @@ const POSTS_FILTER_TYPES = [
     {value: 'title', title: 'Title'}
 ];
 
-export function Posts() {
+export const Posts = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'userId');
     const userId = filterType === 'userId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: posts, pages} = usePosts(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set('page', num.toString());
         setSearchParams(searchParams);
     }
 
-    const setSearchParamsDebounced = useRef(
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((searchParams) => {
             setSearchParams(searchParams);
-        }, 500)
-    ).current;
+        }, 500), [setSearchParams]
+    );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;
@@ -79,7 +79,7 @@ export function Posts() {
             filterTypes={POSTS_FILTER_TYPES}
         />
 
-        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange} />
+        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange}/>
 
     </div>;
 }

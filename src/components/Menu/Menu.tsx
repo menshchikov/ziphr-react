@@ -1,6 +1,6 @@
-import { MenuItem } from '../MenuItem/MenuItem';
+import {MenuItem} from '../MenuItem/MenuItem';
 
-export function Menu() {
+export const Menu = () => {
     return <div className='nav nav-pills flex-column'>
         <MenuItem path='/dashboard' title='Dashboard'></MenuItem>
         <MenuItem path='/posts' title='Posts'></MenuItem>
