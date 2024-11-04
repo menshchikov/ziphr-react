@@ -14,7 +14,7 @@ export const AlbumCardPhotos = (props: { albumId: number }) => {
         {photos.map(photo => <a href={'/photos/' + photo.id} key={photo.id}>
             <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                     className="w-full h-[4rem] object-cover"/>
+                    className="w-full h-[4rem] object-cover"/>
             </div>
         </a>)}
     </div>;

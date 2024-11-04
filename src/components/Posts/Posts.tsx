@@ -63,7 +63,7 @@ export const Posts = () => {
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
                 <a className="link"
-                   href="/dashboard">Dashboard</a>
+                    href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700">Posts</li>

@@ -59,7 +59,7 @@ export const Photos = () => {
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
                     <a className="link"
-                       href="/dashboard">Dashboard</a>
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Photos</li>
@@ -80,7 +80,7 @@ export const Photos = () => {
                     <div key={photo.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <a href={'/photos/' + photo.id} className="link">
                             <img src={photo.thumbnailUrl} alt={photo.thumbnailUrl.split('/').pop()}
-                                 className="bg-gray-200 object-cover w-full h-[200px]"></img>
+                                className="bg-gray-200 object-cover w-full h-[200px]"></img>
                             <div className="p-1 line-clamp-1">{photo.title}</div>
                         </a>
                         <a href={'/albums/' + photo.albumId} className="link p-1">View

@@ -62,7 +62,7 @@ export const Albums = () => {
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
                     <a className="link"
-                       href="/dashboard">Dashboard</a>
+                        href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Albums</li>
@@ -83,7 +83,7 @@ export const Albums = () => {
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
-                               className="link">
+                                className="link">
                                 {album.title}
                             </a>
                         </div>
@@ -92,9 +92,9 @@ export const Albums = () => {
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
-                                  className="link">
-                            User {album.userId}
-                        </a>
+                                className="link">
+                                User {album.userId}
+                            </a>
                         </div>
                     </div>))}
             </div>
