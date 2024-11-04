@@ -1,12 +1,12 @@
 import {ChangeEvent, useRef} from 'react';
-import {useSearchParams} from "react-router-dom";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {usePosts} from "../../hooks/usePosts.ts";
-import {PostsTable} from "./PostsTable.tsx";
-import {FilterBar} from "../FilterBar.tsx";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {useSearchParams} from 'react-router-dom';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {usePosts} from '../../hooks/usePosts.ts';
+import {PostsTable} from './PostsTable.tsx';
+import {FilterBar} from '../FilterBar.tsx';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const POSTS_FILTER_TYPES = [

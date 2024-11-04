@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query";
-import {filterArrayByTitle, paginateArray} from "../services/utils.ts";
-import {getAlbums} from "../services/album-api.ts";
+import {useQuery} from '@tanstack/react-query';
+import {filterArrayByTitle, paginateArray} from '../services/utils.ts';
+import {getAlbums} from '../services/album-api.ts';
 
 export function useAlbums(userId: string = '', title: string = '', page: number = 1, pageSize?: number) {
     const {isPending, data, isError, error} = useQuery({

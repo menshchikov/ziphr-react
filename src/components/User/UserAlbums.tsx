@@ -1,5 +1,5 @@
-import {Loader} from "../Loader";
-import {useAlbums} from "../../hooks/useAlbums.ts";
+import {Loader} from '../Loader';
+import {useAlbums} from '../../hooks/useAlbums.ts';
 
 export function UserAlbums(props: { userId: string | undefined }) {
     const {isPending, isError, albums, error} = useAlbums(props.userId);

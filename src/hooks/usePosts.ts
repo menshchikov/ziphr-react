@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query";
-import {getPosts} from "../services/post-api.ts";
-import {filterArrayByTitle, paginateArray} from "../services/utils.ts";
+import {useQuery} from '@tanstack/react-query';
+import {getPosts} from '../services/post-api.ts';
+import {filterArrayByTitle, paginateArray} from '../services/utils.ts';
 
 export function usePosts(userId: string = '', title: string = '', page: number = 1, pageSize?: number) {
     const {isPending, data, isError, error} = useQuery({

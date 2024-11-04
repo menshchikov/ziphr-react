@@ -1,9 +1,9 @@
-import {useQuery} from "@tanstack/react-query";
-import {useParams} from "react-router-dom";
-import {getUserById} from "../../services/user-api";
-import {UserAlbums} from "./UserAlbums";
-import {UserPosts} from "./UserPosts";
-import {Loader} from "../Loader";
+import {useQuery} from '@tanstack/react-query';
+import {useParams} from 'react-router-dom';
+import {getUserById} from '../../services/user-api';
+import {UserAlbums} from './UserAlbums';
+import {UserPosts} from './UserPosts';
+import {Loader} from '../Loader';
 
 export const User = () => {
     const {id} = useParams();

@@ -1,7 +1,7 @@
-import {useQuery} from "@tanstack/react-query";
-import {useParams} from "react-router-dom";
-import {getPostById} from "../../services/post-api";
-import {Loader} from "../Loader";
+import {useQuery} from '@tanstack/react-query';
+import {useParams} from 'react-router-dom';
+import {getPostById} from '../../services/post-api';
+import {Loader} from '../Loader';
 
 export const Post = () => {
     const {id} = useParams();

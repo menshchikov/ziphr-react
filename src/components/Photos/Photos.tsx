@@ -1,12 +1,12 @@
 import React, {ChangeEvent} from 'react';
-import {Paginator} from "../Paginator";
-import {useSearchParams} from "react-router-dom";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {usePhotos} from "../../hooks/usePhotos.ts";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FilterBar} from "../FilterBar.tsx";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {Paginator} from '../Paginator';
+import {useSearchParams} from 'react-router-dom';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {usePhotos} from '../../hooks/usePhotos.ts';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FilterBar} from '../FilterBar.tsx';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const PHOTOS_FILTER_TYPES = [
@@ -51,7 +51,7 @@ export function Photos() {
         return <Loader/>
     }
     if (isError) {
-        return <div>{"Error: " + error}</div>
+        return <div>{'Error: ' + error}</div>
     }
 
     return (

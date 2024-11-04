@@ -1,5 +1,5 @@
-import {Loader} from "../Loader";
-import {usePosts} from "../../hooks/usePosts.ts";
+import {Loader} from '../Loader';
+import {usePosts} from '../../hooks/usePosts.ts';
 
 export function UserPosts(props: { userId: string | undefined }) {
     const {isPending, isError, posts, error} = usePosts(props.userId);

@@ -1,5 +1,5 @@
-import {Photo} from "../model/photo";
-import {API_URL} from "./consts.ts";
+import {Photo} from '../model/photo';
+import {API_URL} from './consts.ts';
 
 export function getPhotoById(id: string): Promise<Photo> {
     const url = API_URL + '/photos/';

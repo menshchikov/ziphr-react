@@ -1,13 +1,13 @@
 import {ChangeEvent, useCallback, useMemo} from 'react';
-import {Paginator} from "../Paginator";
-import {useSearchParams} from "react-router-dom";
-import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {useAlbums} from "../../hooks/useAlbums.ts";
-import {FilterBar} from "../FilterBar.tsx";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {Paginator} from '../Paginator';
+import {useSearchParams} from 'react-router-dom';
+import {AlbumCardPhotos} from './AlbumCardPhotos.tsx';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {useAlbums} from '../../hooks/useAlbums.ts';
+import {FilterBar} from '../FilterBar.tsx';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const ALBUMS_FILTER_TYPES = [

@@ -1,5 +1,5 @@
-import {Post} from "../model/post";
-import {API_URL} from "./consts.ts";
+import {Post} from '../model/post';
+import {API_URL} from './consts.ts';
 
 export async function getPostById(id: string): Promise<Post> {
 

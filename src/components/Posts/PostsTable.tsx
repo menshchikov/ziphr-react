@@ -1,5 +1,5 @@
-import {Post} from "../../model/post.ts";
-import {Paginator} from "../Paginator.tsx";
+import {Post} from '../../model/post.ts';
+import {Paginator} from '../Paginator.tsx';
 import './PostsTable.css';
 
 
@@ -22,12 +22,12 @@ export function PostsTable({posts, page, pages, onPageChange}: Props) {
                     <td className="table-cell">
                         <a
                             className="link text-nowrap"
-                            href={"/users/" + post.userId}
+                            href={'/users/' + post.userId}
                         >User {post.userId}</a>
                     </td>
                     <td className="table-cell">
                         <a className="link"
-                            href={"posts/" + post.id}
+                            href={'posts/' + post.id}
                         >{post.title}</a>
                     </td>
                     <td className="table-cell">{post.body}</td>

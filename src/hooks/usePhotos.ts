@@ -1,6 +1,6 @@
-import {useQuery} from "@tanstack/react-query";
-import {filterArrayByTitle, paginateArray} from "../services/utils.ts";
-import {getPhotos} from "../services/photo-api.ts";
+import {useQuery} from '@tanstack/react-query';
+import {filterArrayByTitle, paginateArray} from '../services/utils.ts';
+import {getPhotos} from '../services/photo-api.ts';
 
 export function usePhotos(albumId: string ='', title: string = '', page: number = 1, pageSize?: number) {
     const {isPending, data, isError, error} = useQuery({

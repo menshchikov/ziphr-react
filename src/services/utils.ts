@@ -1,4 +1,4 @@
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "./consts.ts";
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from './consts.ts';
 
 export function paginateArray<T>(array: Array<T>, page: number, size: number): T[] {
     const start = (page - 1) * size;

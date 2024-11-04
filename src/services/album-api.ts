@@ -1,5 +1,5 @@
-import {Album} from "../model/album";
-import {API_URL} from "./consts.ts";
+import {Album} from '../model/album';
+import {API_URL} from './consts.ts';
 
 export async function getAlbumById(id: string): Promise<Album> {
     const url = API_URL + '/albums/';
