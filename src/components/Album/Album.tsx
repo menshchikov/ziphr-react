@@ -1,4 +1,4 @@
-import {ChangeEvent, useRef} from 'react';
+import {ChangeEvent, useMemo} from 'react';
 import {useParams, useSearchParams} from 'react-router-dom';
 import {useQuery} from '@tanstack/react-query';
 import {getAlbumById} from '../../services/album-api';
@@ -29,12 +29,11 @@ export const Album = () => {
     });
     const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
-
-    const setSearchParamsDebounced = useRef(
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((searchParams) => {
             setSearchParams(searchParams);
-        }, 500)
-    ).current;
+        }, 500), [setSearchParams]
+    );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const title = e.target.value;

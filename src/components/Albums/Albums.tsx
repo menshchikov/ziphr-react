@@ -1,4 +1,4 @@
-import {ChangeEvent, useCallback, useMemo} from 'react';
+import {ChangeEvent, useMemo} from 'react';
 import {Paginator} from '../Paginator';
 import {useSearchParams} from 'react-router-dom';
 import {AlbumCardPhotos} from './AlbumCardPhotos.tsx';
@@ -30,23 +30,10 @@ export function Albums() {
         setSearchParams(searchParams);
     }
 
-    // const setSearchParamsDebounced = useCallback(
-    //     debounce((searchParams) => {
-    //         setSearchParams(searchParams);
-    //     }, 500),
-    //     [setSearchParams]
-    // );
-    // React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead
-    // solution with useMemo works fine, but looks wierd
-
-    const setSearchParamsDebouncedMemorized = useMemo(() =>
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((params: URLSearchParams) => {
             setSearchParams(params);
         }, 500), [setSearchParams]
-    );
-
-    const setSearchParamsDebounced = useCallback((p: URLSearchParams) =>
-        setSearchParamsDebouncedMemorized(p), [setSearchParamsDebouncedMemorized]
     );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {

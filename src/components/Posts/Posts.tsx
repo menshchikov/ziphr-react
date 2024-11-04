@@ -1,4 +1,4 @@
-import {ChangeEvent, useRef} from 'react';
+import {ChangeEvent, useMemo} from 'react';
 import {useSearchParams} from 'react-router-dom';
 import {debounce} from 'lodash';
 import {Loader} from '../Loader';
@@ -27,11 +27,11 @@ export function Posts() {
         setSearchParams(searchParams);
     }
 
-    const setSearchParamsDebounced = useRef(
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((searchParams) => {
             setSearchParams(searchParams);
-        }, 500)
-    ).current;
+        }, 500), [setSearchParams]
+    );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value;

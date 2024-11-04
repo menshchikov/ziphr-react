@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import {ChangeEvent, useMemo} from 'react';
 import {Paginator} from '../Paginator';
 import {useSearchParams} from 'react-router-dom';
 import {debounce} from 'lodash';
@@ -23,11 +23,11 @@ export function Photos() {
     const title = filterType === 'title' ? filterValue : '';
     const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
 
-    const setSearchParamsDebounced = React.useRef(
-        debounce((qParams) => {
-            setSearchParams(qParams);
-        }, 500)
-    ).current;
+    const setSearchParamsDebounced = useMemo(() =>
+        debounce((searchParams) => {
+            setSearchParams(searchParams);
+        }, 500), [setSearchParams]
+    );
 
     function pageChange(num: number) {
         searchParams.set(PAGE_PARAM, num.toString(10));
