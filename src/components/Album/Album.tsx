@@ -1,12 +1,11 @@
 import {ChangeEvent, useMemo} from 'react';
 import {useParams, useSearchParams} from 'react-router-dom';
-import {useQuery} from '@tanstack/react-query';
-import {getAlbumById} from '../../services/album-api';
 import {Paginator} from '../Paginator';
 import {debounce} from 'lodash';
 import {Loader} from '../Loader.tsx';
 import {usePhotos} from '../../hooks/usePhotos.ts';
 import {FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
+import {useAlbum} from "../../hooks/useAlbum.ts";
 
 const PAGE_SIZE = 5;
 
@@ -23,10 +22,7 @@ export const Album = () => {
         setSearchParams(searchParams);
     }
 
-    const albumQuery = useQuery({
-        queryKey: ['album', id],
-        queryFn: () => getAlbumById(id || '0')
-    });
+    const albumQuery = useAlbum(id);
     const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
     const setSearchParamsDebounced = useMemo(() =>

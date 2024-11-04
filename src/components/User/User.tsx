@@ -1,16 +1,12 @@
-import {useQuery} from '@tanstack/react-query';
 import {useParams} from 'react-router-dom';
-import {getUserById} from '../../services/user-api';
 import {UserAlbums} from './UserAlbums';
 import {UserPosts} from './UserPosts';
 import {Loader} from '../Loader';
+import {useUser} from "../../hooks/useUser.ts";
 
 export const User = () => {
     const {id} = useParams();
-    const {isPending, isError, data: user, error} = useQuery({
-        queryKey: ['user', id],
-        queryFn: () => getUserById(id || '0'),
-    })
+    const {isPending, isError, data: user, error} = useUser(id)
 
     if(isPending){
         return <Loader/>
