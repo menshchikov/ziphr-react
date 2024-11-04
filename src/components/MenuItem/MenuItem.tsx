@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import classNames from 'classnames';
 
 export interface MenuItemProps {
@@ -6,7 +6,7 @@ export interface MenuItemProps {
     title: string;
 }
 
-export function MenuItem(props: MenuItemProps){
+export const MenuItem = (props: MenuItemProps) => {
     const location = useLocation();
     const isActive = location.pathname.indexOf(props.path) > -1;
 

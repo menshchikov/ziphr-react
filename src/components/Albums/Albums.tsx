@@ -15,7 +15,7 @@ const ALBUMS_FILTER_TYPES = [
     {value: 'title', title: 'Title'}
 ]
 
-export function Albums() {
+export const Albums = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -62,7 +62,7 @@ export function Albums() {
             <ol className="flex flex-row gap-2">
                 <li className="breadcrumb-item">
                     <a className="link"
-                        href="/dashboard">Dashboard</a>
+                       href="/dashboard">Dashboard</a>
                 </li>
                 <li>/</li>
                 <li className="breadcrumb-item active" aria-current="page">Albums</li>
@@ -70,11 +70,11 @@ export function Albums() {
 
             <h1 className="text-4xl font-bold my-4">Albums</h1>
 
-            <FilterBar 
+            <FilterBar
                 defaultFilter={filterValue}
-                onFilterChange={onFilterChange} 
+                onFilterChange={onFilterChange}
                 onFilterTypeChange={onFilterTypeChange}
-                defaultFilterType={filterType} 
+                defaultFilterType={filterType}
                 filterTypes={ALBUMS_FILTER_TYPES}
             />
 
@@ -83,7 +83,7 @@ export function Albums() {
                     <div key={album.id} className="border border-gray-200 rounded-lg overflow-hidden">
                         <div className="bg-gray-200 p-2 line-clamp-1">
                             <a href={'/albums/' + album.id}
-                                className="link">
+                               className="link">
                                 {album.title}
                             </a>
                         </div>
@@ -92,9 +92,9 @@ export function Albums() {
                         </div>
                         <div className="bg-gray-200 p-2">
                             By <a href={'/users/' + album.userId}
-                                className="link">
-                                User {album.userId}
-                            </a>
+                                  className="link">
+                            User {album.userId}
+                        </a>
                         </div>
                     </div>))}
             </div>

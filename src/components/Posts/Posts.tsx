@@ -14,7 +14,7 @@ const POSTS_FILTER_TYPES = [
     {value: 'title', title: 'Title'}
 ];
 
-export function Posts() {
+export const Posts = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'userId');
     const userId = filterType === 'userId' ? filterValue : '';
@@ -63,7 +63,7 @@ export function Posts() {
         <ol className="flex flex-row gap-2">
             <li className="breadcrumb-item">
                 <a className="link"
-                    href="/dashboard">Dashboard</a>
+                   href="/dashboard">Dashboard</a>
             </li>
             <li>/</li>
             <li className="font-bold text-blue-700">Posts</li>
@@ -79,7 +79,7 @@ export function Posts() {
             filterTypes={POSTS_FILTER_TYPES}
         />
 
-        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange} />
+        <PostsTable posts={posts} page={page} pages={pages} onPageChange={onPageChange}/>
 
     </div>;
 }
