@@ -1,12 +1,11 @@
-import {ChangeEvent, useRef} from 'react';
-import {useParams, useSearchParams} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import {getAlbumById} from "../../services/album-api";
-import {Paginator} from "../Paginator";
-import {debounce} from "lodash";
-import {Loader} from "../Loader.tsx";
-import {usePhotos} from "../../hooks/usePhotos.ts";
-import {FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {ChangeEvent, useMemo} from 'react';
+import {useParams, useSearchParams} from 'react-router-dom';
+import {Paginator} from '../Paginator';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader.tsx';
+import {usePhotos} from '../../hooks/usePhotos.ts';
+import {FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
+import {useAlbum} from '../../hooks/useAlbum.ts';
 
 const PAGE_SIZE = 5;
 
@@ -23,18 +22,14 @@ export const Album = () => {
         setSearchParams(searchParams);
     }
 
-    const albumQuery = useQuery({
-        queryKey: ['album', id],
-        queryFn: () => getAlbumById(id || '0')
-    });
+    const albumQuery = useAlbum(id);
     const photosQuery = usePhotos(id?.toString() || '0', titleFilter, page, PAGE_SIZE)
 
-
-    const setSearchParamsDebounced = useRef(
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((searchParams) => {
             setSearchParams(searchParams);
-        }, 500)
-    ).current;
+        }, 500), [setSearchParams]
+    );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
         const title = e.target.value;
@@ -57,7 +52,7 @@ export const Album = () => {
         </div>
     }
 
-    if (!albumQuery.data || !photosQuery.photos) {
+    if (!albumQuery.data || !photosQuery.items) {
         return <div className="p-2">
             <h1>Photo not found</h1>
         </div>
@@ -88,7 +83,7 @@ export const Album = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {photosQuery.photos.map((photo) => (
+            {photosQuery.items.map((photo) => (
                 <a key={photo.id}
                     className="border border-gray-200 rounded-lg overflow-hidden link"
                     href={'/photos/' + photo.id}

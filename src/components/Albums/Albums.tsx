@@ -1,13 +1,13 @@
-import {ChangeEvent, useCallback, useMemo} from 'react';
-import {Paginator} from "../Paginator";
-import {useSearchParams} from "react-router-dom";
-import {AlbumCardPhotos} from "./AlbumCardPhotos.tsx";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {useAlbums} from "../../hooks/useAlbums.ts";
-import {FilterBar} from "../FilterBar.tsx";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {ChangeEvent, useMemo} from 'react';
+import {Paginator} from '../Paginator';
+import {useSearchParams} from 'react-router-dom';
+import {AlbumCardPhotos} from './AlbumCardPhotos.tsx';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {useAlbums} from '../../hooks/useAlbums.ts';
+import {FilterBar} from '../FilterBar.tsx';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const ALBUMS_FILTER_TYPES = [
@@ -15,7 +15,7 @@ const ALBUMS_FILTER_TYPES = [
     {value: 'title', title: 'Title'}
 ]
 
-export function Albums() {
+export const Albums = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -23,30 +23,17 @@ export function Albums() {
     const userId = filterType === 'userId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
 
-    const {isPending, isError, error, albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: albums, pages} = useAlbums(userId, title, page, PAGE_SIZE);
 
     function onPageChange(num: number) {
         searchParams.set(PAGE_PARAM, num.toString());
         setSearchParams(searchParams);
     }
 
-    // const setSearchParamsDebounced = useCallback(
-    //     debounce((searchParams) => {
-    //         setSearchParams(searchParams);
-    //     }, 500),
-    //     [setSearchParams]
-    // );
-    // React Hook useCallback received a function whose dependencies are unknown. Pass an inline function instead
-    // solution with useMemo works fine, but looks wierd
-
-    const setSearchParamsDebouncedMemorized = useMemo(() =>
+    const setSearchParamsDebounced = useMemo(() =>
         debounce((params: URLSearchParams) => {
             setSearchParams(params);
         }, 500), [setSearchParams]
-    );
-
-    const setSearchParamsDebounced = useCallback((p: URLSearchParams) =>
-        setSearchParamsDebouncedMemorized(p), [setSearchParamsDebouncedMemorized]
     );
 
     function onFilterChange(e: ChangeEvent<HTMLInputElement>) {
@@ -83,11 +70,11 @@ export function Albums() {
 
             <h1 className="text-4xl font-bold my-4">Albums</h1>
 
-            <FilterBar 
+            <FilterBar
                 defaultFilter={filterValue}
-                onFilterChange={onFilterChange} 
+                onFilterChange={onFilterChange}
                 onFilterTypeChange={onFilterTypeChange}
-                defaultFilterType={filterType} 
+                defaultFilterType={filterType}
                 filterTypes={ALBUMS_FILTER_TYPES}
             />
 

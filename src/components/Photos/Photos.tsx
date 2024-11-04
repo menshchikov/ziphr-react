@@ -1,12 +1,12 @@
-import React, {ChangeEvent} from 'react';
-import {Paginator} from "../Paginator";
-import {useSearchParams} from "react-router-dom";
-import {debounce} from "lodash";
-import {Loader} from "../Loader";
-import {usePhotos} from "../../hooks/usePhotos.ts";
-import {getCommonSearchParams} from "../../services/utils.ts";
-import {FilterBar} from "../FilterBar.tsx";
-import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from "../../services/consts.ts";
+import {ChangeEvent, useMemo} from 'react';
+import {Paginator} from '../Paginator';
+import {useSearchParams} from 'react-router-dom';
+import {debounce} from 'lodash';
+import {Loader} from '../Loader';
+import {usePhotos} from '../../hooks/usePhotos.ts';
+import {getCommonSearchParams} from '../../services/utils.ts';
+import {FilterBar} from '../FilterBar.tsx';
+import {FILTER_TYPE_PARAM, FILTER_VALUE_PARAM, PAGE_PARAM} from '../../services/consts.ts';
 
 const PAGE_SIZE = 5;
 const PHOTOS_FILTER_TYPES = [
@@ -14,20 +14,20 @@ const PHOTOS_FILTER_TYPES = [
     {value: 'title', title: 'Title'}
 ]
 
-export function Photos() {
+export const Photos = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
     const {filterType, filterValue, page} = getCommonSearchParams(searchParams, 'albumId');
     const albumId = filterType === 'albumId' ? filterValue : '';
     const title = filterType === 'title' ? filterValue : '';
-    const {isPending, isError, error, photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
+    const {isPending, isError, error, items: photos, pages} = usePhotos(albumId, title, page, PAGE_SIZE);
 
-    const setSearchParamsDebounced = React.useRef(
-        debounce((qParams) => {
-            setSearchParams(qParams);
-        }, 500)
-    ).current;
+    const setSearchParamsDebounced = useMemo(() =>
+        debounce((searchParams) => {
+            setSearchParams(searchParams);
+        }, 500), [setSearchParams]
+    );
 
     function pageChange(num: number) {
         searchParams.set(PAGE_PARAM, num.toString(10));
@@ -51,7 +51,7 @@ export function Photos() {
         return <Loader/>
     }
     if (isError) {
-        return <div>{"Error: " + error}</div>
+        return <div>{'Error: ' + error}</div>
     }
 
     return (

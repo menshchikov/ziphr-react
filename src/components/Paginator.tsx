@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import classNames from 'classnames';
 
 export interface PaginatorProps {
     currentPageNum: number,
@@ -42,9 +42,9 @@ export const Paginator = (props: PaginatorProps) => {
                     } else {
                         return <li key={index}
                             className={classNames([
-                                "cursor-pointer px-4 py-2",
-                                "border border-solid hover:bg-gray-200",
-                                {"text-white bg-blue-700": currentPageNum === num},
+                                'cursor-pointer px-4 py-2',
+                                'border border-solid hover:bg-gray-200',
+                                {'text-white bg-blue-700': currentPageNum === num},
                             ])}
                             onClick={() => onPageChange(num)}
                         >

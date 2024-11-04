@@ -28,11 +28,11 @@ code {
 }
 
 .link {
-  @apply text-blue-600 visited:text-purple-600
+  @apply text-blue-600 visited:text-purple-600;
 }
 
 .counter{
-  @apply text-[#32cd32] text-lg font-bold mr-1
+  @apply text-[#32cd32] text-lg font-bold mr-1;
 }
 
 @keyframes rotation {

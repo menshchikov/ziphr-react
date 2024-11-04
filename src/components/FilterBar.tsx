@@ -6,7 +6,13 @@ type Props = {
     filterTypes: { value: string, title: string }[],
 };
 
-export function FilterBar({defaultFilter, defaultFilterType, onFilterTypeChange, onFilterChange, filterTypes}: Props) {
+export const FilterBar = ({
+    defaultFilter,
+    defaultFilterType,
+    onFilterTypeChange,
+    onFilterChange,
+    filterTypes
+}: Props) => {
     return <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
         <div>
             <label htmlFor="filter" className="block font-bold">Filter</label>

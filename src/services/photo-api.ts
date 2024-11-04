@@ -1,16 +1,17 @@
-import {Photo} from "../model/photo";
-import {API_URL} from "./consts.ts";
+import {Photo} from '../model/photo';
+import {API_URL} from './consts.ts';
 
-export function getPhotoById(id: string): Promise<Photo> {
+export async function getPhotoById(id: string): Promise<Photo> {
     const url = API_URL + '/photos/';
-    return fetch(url + id).then(res => res.json())
+    let res = await fetch(url + id);
+    return await res.json();
 }
 
-export function getPhotos(albumId?: string): Promise<Photo[]> {
+export async function getPhotos(albumId?: string): Promise<Photo[]> {
     let url = API_URL + '/photos';
     if (albumId) {
         url += '?albumId=' + albumId;
     }
-    return fetch(url)
-        .then(res => res.json())
+    let res = await fetch(url);
+    return await res.json();
 }
